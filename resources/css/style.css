@@ -22,6 +22,7 @@ body {
 nav{
     background-color: #030303;
     text-align: center;
+    border-bottom: 1px solid #343434;
 }
 
 .nav-list {
@@ -49,7 +50,7 @@ nav{
     font-size: 100%;*/
     float: left; 
     display: block;
-    padding: 14px 30px;
+    padding: 14px 52px;
 }
 
 .nav-list li a:link,
@@ -112,6 +113,24 @@ SAVE THIS FOR MOBILE USAGE
 
 /* ------ ICONS ------ */
 
+ion-icon{
+    font-size: 120%;
+    padding: 0 10px; 
+    color: #fff;
+    transition: color 0.3s;
+}
+
+ion-icon:hover{
+    color: pink;
+}
+
+.icon-facebook:hover { color: #3b5998; }
+
+.icon-linkedin:hover { color: #55acee; }
+
+.icon-instagram:hover { color: #dd2a7b; }
+
+.icon-github:hover { color: pink; }
 
 /* Currently OBSOLETE */
 .mobile-nav-icon {
@@ -139,6 +158,8 @@ SAVE THIS FOR MOBILE USAGE
 .icon-close:hover {
     color: #1025c4
 }
+
+
 
 
 
