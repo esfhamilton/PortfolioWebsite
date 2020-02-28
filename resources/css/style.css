@@ -23,6 +23,7 @@ nav{
     background-color: #030303;
     text-align: center;
     border-bottom: 1px solid #343434;
+    font-size: 115%;
 }
 
 .nav-list {
@@ -33,7 +34,6 @@ nav{
     display: inline-block;
     list-style: none;
     overflow: hidden;
-    font-size: 100%;
 }
 
 
@@ -86,13 +86,14 @@ SAVE THIS FOR MOBILE USAGE
 .main {
     display: block;
     color: #fff;
-    max-width: 26em;
+    max-width: 25em;
     margin: auto;
     margin-top: 2.5em;
     margin-bottom: 2em;
     padding: 2em;
     border: 4px solid #fff;
     text-align: center;
+    font-size: 108%;
 }
 
 .main h1, h3{
@@ -104,12 +105,8 @@ SAVE THIS FOR MOBILE USAGE
 }
 
 .main-box h3 {
-    font-size: 35px;
+    font-size: 40px;
 }
-
-
-
-
 
 /* ------ ICONS ------ */
 
