@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Insert site description here">
+        
+        <!--<link rel="stylesheet" type="text/css" href="vendors/css/normalize.css"> 
+        <link rel="stylesheet" type="text/css" href="vendors/css/Grid.css"> 
+        <link rel="stylesheet" type="text/css" href="vendors/css/animate.css">     
+        <link rel="stylesheet" type="text/css" href="resources/css/queries.css">-->
+        <link rel="stylesheet" type="text/css" href="../resources/css/webfonts/stylesheet.css">
+        <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
+
+        <title>14/04</title>
+
+        <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <nav>
+                 <ul class="nav-list js--nav-list">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../more.html">More</a></li>
+                </ul>
+                
+                <!-- SAVE FOR MOBILE USAGE<a class="js--nav-icon"><i class="icon ion-md-menu nav-icon"></i></a> -->
+            </nav>
+        </header>
+        <!--<a href ="#"><ion-icon class = "icon-home" name="home"></ion-icon></a>-->
+        
+        <br><h1>Snake Algorithms</h1><br>
+        
+        <canvas id="gc" width="529" height="529" style="border:3px solid #fff;"></canvas>
+        
+        <h2>Speed</h2>
+        <div class="slidecontainer">
+          <input type="range" min="0" max="100" value="10" class="slider" id="speedSlider">
+          <p>Value: <span id="speedVal"></span></p>
+        </div>
+        <p>Time: <span id="timeVal"></span> </p>
+                    
+        
+        <script src="js/snake.js"></script>  
+        <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    </body>
+</html>
+
+
+
+
