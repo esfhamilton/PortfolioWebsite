@@ -60,21 +60,39 @@ function game() {
         time++;
         document.getElementById("timeVal").innerHTML = time;
 
-
         // ########### The current AI
-        xv=1
+      /*  xv=1
         yv=0;
         incrementer++;
         if (incrementer == 23){
             xv=0;
             yv=1;
             incrementer=0;
-        }
+        }*/
 
+        // ######################
+        
+        //############ Best First Search
+        direction = bestFirstSearch();
+        switch(direction) {
+            case 0:
+                xv=0;yv=-1;            
+                break;
+            case 1:
+                xv=1;yv=0;
+                break;
+            case 2:
+                xv=0;yv=1;
+                break;
+            case 3:
+                xv=-1;yv=0;
+                break; 
+        }
+        
         // ######################
 
         // Wraps snake, can change this to end game on touching wall
-        if(px<0) {
+        /*if(px<0) {
             px= tc-1;
         }
         if(px>tc-1) {
@@ -85,6 +103,11 @@ function game() {
         }
         if(py>tc-1) {
             py= 0;
+        }*/
+        
+        // Ends game if touching wall
+        if(px<0||px>tc-1||py<0||py>tc-1) {
+            tail=0;
         }
 
         // Background
@@ -110,9 +133,6 @@ function game() {
         while(trail.length>tail) {
         trail.shift();
         }
-        
-        oax=ax;
-        oay=ay;
 
         // Changes apple position when 'eaten'
         if(ax==px && ay==py) {
@@ -163,6 +183,58 @@ function game() {
         ctx.textAlign = "center";
         ctx.fillText("Game Complete",canv.width/2, canv.height/2);
     }
+}
+
+function bestFirstSearch(){
+    // nx ny ex ey sx sy wx wy
+    // check if ny sy touches vertical walls
+    // check if ex wx touches horizontal walls
+    // check each position which goes against current velocity is not added to array
+    
+    // Set directional positions relative to snake head
+    nx=sx=px;
+    ey=wy=py;
+    ny=py-1;
+    sy=py+1;
+    ex=px+1;
+    wx=px-1;
+    
+    // Distances from each direction to apple
+    nd = Math.sqrt(Math.pow((nx-ax),2)+Math.pow((ny-ay),2));
+    ed = Math.sqrt(Math.pow((ex-ax),2)+Math.pow((ey-ay),2));
+    sd = Math.sqrt(Math.pow((sx-ax),2)+Math.pow((sy-ay),2));
+    wd = Math.sqrt(Math.pow((wx-ax),2)+Math.pow((wy-ay),2));
+    
+    for(var i=0; i <trail.length;i++){
+        if (nx==trail[i].x && ny==trail[i].y || ny==-1 || ny==23){
+            nd=9999;
+        }
+        if (ex==trail[i].x && ey==trail[i].y || ex==-1 || ex==23){
+            ed=9999;
+        }
+        if (sx==trail[i].x && sy==trail[i].y || sy==-1 || sy==23){
+            sd=9999;
+        }
+        if (wx==trail[i].x && wy==trail[i].y || wx==-1 || wx==23){
+            wd=9999;
+        }
+    } 
+    
+    distances = [nd,ed,sd,wd];
+    
+    shortestDistance = nd;
+    direction=0;
+    
+    for (d=0;d<distances.length;d++){
+        if(shortestDistance>distances[d]){
+            shortestDistance = distances[d];
+            console.log(shortestDistance);
+            direction = d;
+        }
+    }
+    console.log(nd,sd,ed,wd);
+    console.log(direction);
+    return(direction);
 }
 
 // Controls for changing direction if playing/ testing
