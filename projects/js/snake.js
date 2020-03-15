@@ -106,130 +106,136 @@ tail = 5;
 // Main game function, called repeatedly based on speedValue
 function game() {
     
-    // This will break in manual mode as snake will immediately crash into itself
-    if(0<tail && tail<(cs+1)) {
-        time++;
-        document.getElementById("timeVal").innerHTML = time;
+    if(mode!="None"){
+        if(0<tail && tail<(cs+1)) {
+            time++;
+            document.getElementById("timeVal").innerHTML = time;
 
-        switch(mode){
-                
-            // Hamiltonian Cycle 
-            case "Hamiltonian":
-                hamiltonianCycle();
-                break;
-        
-             // Best First Search
-            case "BFS":
-                direction = bestFirstSearch();
-                switch(direction) {
-                    case 0:
-                        xv=0;yv=-1;            
-                        break;
-                    case 1:
-                        xv=1;yv=0;
-                        break;
-                    case 2:
-                        xv=0;yv=1;
-                        break;
-                    case 3:
-                        xv=-1;yv=0;
-                        break; 
-                }
-                break;
-        
-            // Manual Mode
-            case "Manual":
-                if(xv==yv){
-                    xv=1;
-                }
-        
-        }
-        
-        // Wraps snake, can change this to end game on touching wall
-        /*if(px<0) {
-            px= tc-1;
-        }
-        if(px>tc-1) {
-            px= 0;
-        }
-        if(py<0) {
-            py= tc-1;
-        }
-        if(py>tc-1) {
-            py= 0;
-        }*/
-        
-        // Ends game if touching wall
-        if(px<0||px>tc-1||py<0||py>tc-1) {
-            tail=0;
-        }
-        
-        // Clears canvas with each call
-        clearCanvas();
-        
-        // Generates snake
-        ctx.fillStyle="lime";
-        for(var i=0;i<trail.length;i++) {
-            ctx.fillRect(trail[i].x*gs,trail[i].y*gs,gs-2,gs-2);
-            // Condition for snake head touching tail
-            if(trail[i].x==px && trail[i].y==py) {
-                if(tail==cs){
-                    tail=(cs+1); // Flags game complete
-                } else{
-                    tail = 0; // Flags game over
-                }
+            // Decides on which algorithm to use based on button pressed
+            switch(mode){
 
+                // Hamiltonian Cycle 
+                case "Hamiltonian":
+                    hamiltonianCycle();
+                    break;
+
+                 // Best First Search
+                case "BFS":
+                    direction = bestFirstSearch();
+                    switch(direction) {
+                        case 0:
+                            xv=0;yv=-1;            
+                            break;
+                        case 1:
+                            xv=1;yv=0;
+                            break;
+                        case 2:
+                            xv=0;yv=1;
+                            break;
+                        case 3:
+                            xv=-1;yv=0;
+                            break; 
+                    }
+                    break;
+
+                // Manual Mode
+                case "Manual":
+                    if(xv==yv){
+                        xv=1;
+                    }
             }
-        }
 
-        // All elements of snake move to position in front
-        trail.push({x:px,y:py});
-        while(trail.length>tail) {
-        trail.shift();
-        }
+            // Wraps snake, can change this to end game on touching wall
+            /*if(px<0) {
+                px= tc-1;
+            }
+            if(px>tc-1) {
+                px= 0;
+            }
+            if(py<0) {
+                py= tc-1;
+            }
+            if(py>tc-1) {
+                py= 0;
+            }*/
 
-        // Changes apple position when 'eaten'
-        if(ax==px && ay==py) {
-            tail++;
-            if (tail<cs){
-                ax=Math.floor(Math.random()*tc);
-                ay=Math.floor(Math.random()*tc);
-                let repeatFlag=true;
-                while(repeatFlag){
-                    repeatFlag = false;
-                    for(i=0; i <trail.length;i++){
-                        if(trail[i].x==ax && trail[i].y==ay){
-                            ax=Math.floor(Math.random()*tc);
-                            ay=Math.floor(Math.random()*tc);
-                            repeatFlag=true;
-                        }  
+            // Ends game if touching wall
+            if(px<0||px>tc-1||py<0||py>tc-1) {
+                tail=0;
+            }
+
+            // Clears canvas with each call
+            clearCanvas();
+
+            // Generates snake
+            ctx.fillStyle="lime";
+            for(var i=0;i<trail.length;i++) {
+                ctx.fillRect(trail[i].x*gs,trail[i].y*gs,gs-2,gs-2);
+                // Condition for snake head touching tail
+                if(trail[i].x==px && trail[i].y==py) {
+                    if(tail==cs){
+                        tail=(cs+1); // Flags game complete
+                    } else{
+                        tail = 0; // Flags game over
+                    }
+
+                }
+            }
+
+            // All elements of snake move to position in front
+            trail.push({x:px,y:py});
+            while(trail.length>tail) {
+            trail.shift();
+            }
+
+            // Changes apple position when 'eaten'
+            if(ax==px && ay==py) {
+                tail++;
+                if (tail<cs){
+                    ax=Math.floor(Math.random()*tc);
+                    ay=Math.floor(Math.random()*tc);
+                    let repeatFlag=true;
+                    while(repeatFlag){
+                        repeatFlag = false;
+                        for(i=0; i <trail.length;i++){
+                            if(trail[i].x==ax && trail[i].y==ay){
+                                ax=Math.floor(Math.random()*tc);
+                                ay=Math.floor(Math.random()*tc);
+                                repeatFlag=true;
+                            }  
+                        }
                     }
                 }
             }
-        }
 
-        // If tail == X Game complete
+            // If tail == X Game complete
+            // Game Over
+
+            // Position updates based on velocity value
+            px+=xv;
+            py+=yv;
+
+            // Generates apple
+            ctx.fillStyle="red";
+            ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+        } 
         // Game Over
+        else if(tail==0) {
+            clearCanvas();
+            ctx.fillStyle="red"; 
+            ctx.fillText("Game Over",canv.width/2, canv.height/2);
+        } 
+        // Game Complete
+        else {
+            clearCanvas();
+            ctx.fillStyle="lime"; 
+            ctx.fillText("Game Complete",canv.width/2, canv.height/2);
+        }
+    }
     
-        // Position updates based on velocity value
-        px+=xv;
-        py+=yv;
-    
-        // Generates apple
-        ctx.fillStyle="red";
-        ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
-    } 
-    // Game Over
-    else if(tail==0) {
-        clearCanvas();
-        ctx.fillStyle="red"; 
-        ctx.fillText("Game Over",canv.width/2, canv.height/2);
-    } 
-    // Game Complete
-    else {
-        clearCanvas();
-        ctx.fillStyle="lime"; 
-        ctx.fillText("Game Complete",canv.width/2, canv.height/2);
+    else{
+        ctx.font = "35px Determination Mono";
+        ctx.fillText("Select an algorithm",canv.width/2, canv.height/2);
     }
 }
 
