@@ -153,6 +153,18 @@ SAVE THIS FOR MOBILE USAGE
 }
 
 
+/* ------ Slider ------ */
+
+.btn{
+    margin: 15px 5px;
+    font-size: 120%;
+    border: 0.1em outset #1f72e3;
+    opacity: 0.7;
+    color: #00c4ff;
+    background-color: #000;
+}
+
+
 /* ------ ICONS ------ */
 
 ion-icon{
