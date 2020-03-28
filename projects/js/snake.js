@@ -84,7 +84,7 @@ function modeSetup(mode) {
     ctx.textAlign = "center";
     
     if(mode!="None"){
-        wait(1000);    
+        wait(200);    
     }
     
     /*  FOR WORKING ON 3 2 1 COUNTDOWN
@@ -120,6 +120,7 @@ function game() {
         if(0<tail && tail<(cs+1)) {
             time++;
             document.getElementById("timeVal").innerHTML = time;
+            document.getElementById("sizeVal").innerHTML = tail;
 
             // Decides on which algorithm to use based on button pressed
             switch(mode){
@@ -152,16 +153,16 @@ function game() {
                 case "DFS":
                     direction = depthFirstSearch();
                     switch(direction) {
-                        case 0:
+                        case 'N':
                             xv=0;yv=-1;            
                             break;
-                        case 1:
+                        case 'E':
                             xv=1;yv=0;
                             break;
-                        case 2:
+                        case 'S':
                             xv=0;yv=1;
                             break;
-                        case 3:
+                        case 'W':
                             xv=-1;yv=0;
                             break; 
                     }
@@ -398,17 +399,6 @@ function bestFirstSearch() {
     return(direction);
 }
 
-function depthFirstSearch() {
-    
-    direction=4;
-    while(direction>3){
-        direction = Math.round(Math.random()*10);    
-    }
-    
-    // Returns an integer in range 0-3 mapping to a favoured direction
-    return(direction);
-}
-
 function expandNode(x,y,cost,direction,tree){
     
     // Set directional positions relative to snake head
@@ -475,6 +465,50 @@ function expandNode(x,y,cost,direction,tree){
     if(addWest){tree.push([wd,wx,wy,cost,direction]);}
     
     return(tree); 
+}
+
+function depthFirstSearch() {
+    
+     /* 
+        tree contains nested arrays each consisting of:
+        [0] : Heuristic for distance to apple (h(x))
+        [1] : x-position of node
+        [2] : y-position of node
+        [3] : Number of expansions from root node - The actual cost of the path (g(x))
+        [4] : Root direction expanded from
+    */
+    let tree = expandNode(px,py,0,'None',[]);
+    
+    // Exit condition - When path to apple has been found or no paths exist
+    let goalReached = false;
+    
+    while(!goalReached){
+        shortestDistance=9999;
+        
+        for(i=0;i<tree.length;i++){
+            if(shortestDistance>tree[i][0]){
+                shortestDistance = tree[i][0];
+                direction = tree[i][4];
+            }
+        }
+        
+        // Either a path has been found or snake is doomed
+        if(shortestDistance==0 || shortestDistance==9999){
+            goalReached = true;
+            break;
+        }
+        
+        for(i=0;i<tree.length;i++){  
+            // If node is not a wall/ tail/ expanded, shortestDistance = f(x)
+            if(tree[i][0]!=9999 && shortestDistance==tree[i][0]){
+                tree[i][0] = 9999; // 9999 also shows node has been expanded
+                tree = expandNode(tree[i][1],tree[i][2],tree[i][3],tree[i][4],tree);
+                break;
+            }
+        }
+    }
+    // Returns an integer in range 0-3 mapping to a NESW direction
+    return(direction);
 }
 
 function aStarSearch() {
