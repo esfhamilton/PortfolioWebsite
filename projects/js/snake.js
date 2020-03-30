@@ -481,8 +481,11 @@ function depthFirstSearch() {
     
     // Exit condition - When path to apple has been found or no paths exist
     let goalReached = false;
+    // Exit condition - Monitors no. of iterations, exits loop if too high to avoid crash
+    let expansions = 0;
     
-    while(!goalReached){
+    while(!goalReached && expansions<7000){
+        expansions++;
         shortestDistance=9999;
         
         for(i=0;i<tree.length;i++){
@@ -525,9 +528,12 @@ function aStarSearch() {
     
     // Exit condition - When path to apple has been found or no paths exist
     let goalReached = false;
+    // Exit condition - Monitors no. of iterations, exits loop if too high to avoid crash
+    let expansions = 0;
     
     // The main loop for the A* algorithm f(x) = h(x) + g(x)
-    while(!goalReached){
+    while(!goalReached && expansions<7000){
+        expansions++;
         shortestDistance=9999;
         
         for(i=0;i<tree.length;i++){
