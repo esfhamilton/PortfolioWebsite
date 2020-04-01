@@ -15,11 +15,14 @@ body {
     overflow-x: hidden;
 }
 
+h1 {
+    text-align: center;
+}
+
 a {
     text-decoration: none;
     color: #00c4ff;
 }
-
 
 /* ------ NAV BAR ------ */
 
@@ -177,6 +180,27 @@ SAVE THIS FOR MOBILE USAGE
     opacity: 1;
 }
 
+.list-left{
+    float:left;    
+    text-align: center;
+    display: grid;
+    width: 25%;
+}
+
+.list-right{
+    float:right;    
+    text-align: center;
+    display: grid;
+    width: 25%;
+}
+
+.list-right h2{
+    padding: 15px 10px;
+}
+
+.list-right p{
+    padding: 10px 10px;
+}
 
 /* ------ ICONS ------ */
 

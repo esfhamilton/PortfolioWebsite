@@ -32,21 +32,33 @@
         
         <br><h1>Snake Algorithms</h1><br>
         
-        <canvas id="gc" width="484" height="484" style="border:3px solid #fff;"></canvas>
-        
-        <h2>Speed</h2>
-        <div class="slidecontainer">
-          <input type="range" min="0" max="100" value="10" class="slider" id="speedSlider">
-          <p>Value: <span id="speedVal"></span></p>
+        <div style="text-align: center;">
+            <canvas id="gc" width="484" height="484" style="border:3px solid #fff;"></canvas>
+            
+            <div class="list-left">
+                <button class = "btn" id="btn-manual">Manual Mode</button>
+                <button class = "btn" id="btn-hamiltonian">Hamiltonian Cycle</button>
+                <button class = "btn" id="btn-bfs">Best-First Search</button>
+                <button class = "btn" id="btn-dfs">Depth-First Search</button>
+                <button class = "btn" id="btn-aStar">A* Search</button>
+            </div>   
+            
+            <div class="list-right">
+                <h2>Speed</h2>
+                <div class="slidecontainer">
+                    <input type="range" min="0" max="100" value="10" class="slider" id="speedSlider">
+                    <p>Value: <span id="speedVal"></span></p>
+                </div>
+                <p>Time: <span id="timeVal"></span> </p>
+                <p>Size: <span id="sizeVal"></span> </p>
+            </div>     
+
         </div>
-        <p>Time: <span id="timeVal"></span> </p>
-        <p>Size: <span id="sizeVal"></span> </p>
-                    
-        <button class = "btn" id="btn-manual">Manual Mode</button>
-        <button class = "btn" id="btn-hamiltonian">Hamiltonian Cycle</button>
-        <button class = "btn" id="btn-bfs">Best-First Search</button>
-        <button class = "btn" id="btn-dfs">Depth-First Search</button>
-        <button class = "btn" id="btn-aStar">A* Search</button>
+        
+        
+        
+        
+        
         
         <script src="js/snake.js"></script>  
         <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
