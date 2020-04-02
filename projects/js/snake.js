@@ -11,7 +11,7 @@ window.onload=function() {
 
     
     // Initial speed variable
-    let speedValue = 20;
+    let speedValue = 10;
     
     // Buttons
     let btnManual = document.getElementById("btn-manual");
@@ -35,6 +35,109 @@ window.onload=function() {
     // Call game() 20 times per second by default
 	let mainCall = setInterval(game,1000/speedValue); 
     
+    /*
+        The onmouseover and onmouseout functions
+        deal with creating descriptive text to 
+        explain the algorithms when hovering
+        over each button.
+    */
+    btnManual.onmouseover =function(){
+        clearCanvas();
+        clearInterval(mainCall);
+        ctx.fillStyle="#4cd6ff"; 
+        ctx.font = "30px Determination Mono";
+        ctx.textAlign = "center";
+        ctx.fillText("This algorithm is only as good",canv.width/2, canv.height/2-10);
+        ctx.fillText("as the player",canv.width/2, canv.height/2+20);
+    };
+    
+    btnManual.onmouseout =function(){
+        clearCanvas();
+        ctx.font = "50px Determination Mono";
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
+    
+    btnHamiltonian.onmouseover =function(){
+        clearCanvas();
+        clearInterval(mainCall);
+        ctx.fillStyle="#4cd6ff"; 
+        ctx.font = "25px Determination Mono";
+        ctx.textAlign = "center";
+        lineSplitter("A Hamiltonian cycle is one in which\na cyclic path traverses every node in\na graph. In this case, each node would\n correspond to a position on the grid.\n\nAs such, the snake will eventually\ncomplete the game but you will be\nwaiting a while, even on max speed",3);
+    };
+
+    btnHamiltonian.onmouseout =function(){
+        clearCanvas();
+        ctx.font = "50px Determination Mono";
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
+    
+    btnBFS.onmouseover =function(){
+        clearCanvas();
+        clearInterval(mainCall);
+        ctx.fillStyle="#4cd6ff"; 
+        ctx.font = "25px Determination Mono";
+        ctx.textAlign = "center";
+        lineSplitter("Treating the front of the snake as a\nroot node, BFS checks each adjacent\nnode corresponding to the top,\nbottom, left and right positions.\n\nThe distance to the goal is calculated\nfor each position and the shortest\nroute is picked.\n\n Because the algorithm doesn't search\nfurther than 1 position ahead, it is\nprone to colliding with itself when\nother paths are available.",5);
+    };
+    
+    btnBFS.onmouseout =function(){
+        clearCanvas();
+        ctx.font = "50px Determination Mono";
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
+    
+    btnDFS.onmouseover =function(){
+        clearCanvas();
+        clearInterval(mainCall);
+        ctx.fillStyle="#4cd6ff"; 
+        ctx.font = "25px Determination Mono";
+        ctx.textAlign = "center";
+        lineSplitter("The DFS algorithm is an iterative\nversion of the BFS algorithm which\ncontinues expanding after the root\nnode. This means that a path will be\nfound to the goal, if one exists.\nBecause of this, the snake avoids\ncolliding with itself when another\nopen path is available.\n\nHowever, the snake is still vulnerable\nto coiling around itself into a\nrestricted area in which it will not\nbe able to escape in time, before an\nopening is created.",6);
+    };
+    
+    btnDFS.onmouseout =function(){
+        clearCanvas();
+        ctx.font = "50px Determination Mono";
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
+    
+    btn_aStar.onmouseover =function(){
+        clearCanvas();
+        clearInterval(mainCall);
+        ctx.fillStyle="#4cd6ff"; 
+        ctx.font = "25px Determination Mono";
+        ctx.textAlign = "center";
+        lineSplitter("A* Search is essentially a DFS\nalgorithm except involves calculating\nthe optimal direction based on both a\nheuristic and actual cost.\n\nThe heuristic is the Manhattan\ndistance to the goal and the actual\ncost is how many node expansions are\nrequired to get there.\n\nThe algorithm still falls victim to\nthe limitations of DFS but it finds\nmore optimal paths.",5);
+    };
+    
+    btn_aStar.onmouseout =function(){
+        clearCanvas();
+        ctx.font = "50px Determination Mono";
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
+    
+    
     // Slider changes call frequency based on value
     slider.oninput = function() {
         clearInterval(mainCall);
@@ -51,8 +154,7 @@ window.onload=function() {
         if (speedValue==100){
             mainCall = setInterval(game,1000/0);
         } else if (speedValue>0) {
-            speedValue *= 2;
-            mainCall = setInterval(game,1000/speedValue);
+            mainCall = setInterval(game,1000/(speedValue*2));
         }
         
         // Clears focus from slider (may remove this later)
@@ -60,6 +162,17 @@ window.onload=function() {
     }  
 }
 
+// Used to prevent having to keep creating multiple fillText lines
+function lineSplitter(txt,startPos) {
+    let spacing = 25;
+    let lines = txt.split('\n');
+
+    for (let i = 0; i<lines.length; i++){
+        ctx.fillText(lines[i], canv.width/2, canv.height/startPos + (i*spacing) );
+    }
+}
+
+// Clears canvas of any text or entities etc.
 function clearCanvas() {
     ctx.fillStyle="black";
     ctx.fillRect(0,0,canv.width,canv.height);
@@ -96,7 +209,6 @@ function modeSetup(mode) {
 
 // Variable to decide which snake algorithm is used
 mode="None";
-// Update these values in modeSetup, call mode Setup in each click function
 // Game timer
 time=0;
 // Player starting position
@@ -257,6 +369,7 @@ function game() {
             clearCanvas();
             ctx.fillStyle="red"; 
             ctx.fillText("Game Over",canv.width/2, canv.height/2);
+        
         } 
         // Game Complete
         else {
@@ -268,6 +381,7 @@ function game() {
     
     else{
         ctx.font = "35px Determination Mono";
+        ctx.fillStyle="white"; 
         ctx.fillText("Select an algorithm",canv.width/2, canv.height/2);
     }
 }

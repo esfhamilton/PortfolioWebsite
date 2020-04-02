@@ -113,7 +113,7 @@ SAVE THIS FOR MOBILE USAGE
 }
 
 .main-box h3 {
-    font-size: 40px;
+    font-size: 43px;
 }
 
 
@@ -125,7 +125,7 @@ SAVE THIS FOR MOBILE USAGE
 
 .slider {
   -webkit-appearance: none;
-  width:100%;
+  width:90%;
   height: 15px;
   border-radius: 5px;
   background: #d3d3d3;
