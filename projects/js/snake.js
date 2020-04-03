@@ -22,18 +22,60 @@ window.onload=function() {
     
     // Sets up game based on selected algorithm
     modeSetup("None");
-    btnManual.onclick =function(){modeSetup("Manual");};
+    let mainCall = setInterval(game,1000/speedValue); 
+
+    btnManual.onclick =function(){
+        modeSetup("Manual");
+        clearInterval(mainCall);
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
     
-    btnHamiltonian.onclick =function(){modeSetup("Hamiltonian");};
+    btnHamiltonian.onclick =function(){
+        modeSetup("Hamiltonian");
+        clearInterval(mainCall);
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
     
-    btnBFS.onclick =function(){modeSetup("BFS");};
+    btnBFS.onclick =function(){
+        modeSetup("BFS");
+        clearInterval(mainCall);
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
     
-    btnDFS.onclick =function(){modeSetup("DFS");};
+    btnDFS.onclick =function(){
+        modeSetup("DFS");
+        clearInterval(mainCall);
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
     
-    btn_aStar.onclick =function(){modeSetup("aStar");};
+    btn_aStar.onclick =function(){
+        modeSetup("aStar");
+        clearInterval(mainCall);
+        if (speedValue==100){
+            mainCall = setInterval(game,1000/0);
+        } else if (speedValue>0) {
+            mainCall = setInterval(game,1000/(speedValue*2));
+        }
+    };
     
     // Call game() 20 times per second by default
-	let mainCall = setInterval(game,1000/speedValue); 
+	//let mainCall = setInterval(game,1000/speedValue); 
     
     /*
         The onmouseover and onmouseout functions
@@ -53,6 +95,7 @@ window.onload=function() {
     
     btnManual.onmouseout =function(){
         clearCanvas();
+        clearInterval(mainCall);
         ctx.font = "50px Determination Mono";
         if (speedValue==100){
             mainCall = setInterval(game,1000/0);
@@ -72,6 +115,7 @@ window.onload=function() {
 
     btnHamiltonian.onmouseout =function(){
         clearCanvas();
+        clearInterval(mainCall);
         ctx.font = "50px Determination Mono";
         if (speedValue==100){
             mainCall = setInterval(game,1000/0);
@@ -91,6 +135,7 @@ window.onload=function() {
     
     btnBFS.onmouseout =function(){
         clearCanvas();
+        clearInterval(mainCall);
         ctx.font = "50px Determination Mono";
         if (speedValue==100){
             mainCall = setInterval(game,1000/0);
@@ -110,6 +155,7 @@ window.onload=function() {
     
     btnDFS.onmouseout =function(){
         clearCanvas();
+        clearInterval(mainCall);
         ctx.font = "50px Determination Mono";
         if (speedValue==100){
             mainCall = setInterval(game,1000/0);
@@ -129,6 +175,7 @@ window.onload=function() {
     
     btn_aStar.onmouseout =function(){
         clearCanvas();
+        clearInterval(mainCall);
         ctx.font = "50px Determination Mono";
         if (speedValue==100){
             mainCall = setInterval(game,1000/0);
