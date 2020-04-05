@@ -116,6 +116,10 @@ SAVE THIS FOR MOBILE USAGE
     font-size: 43px;
 }
 
+/* ------ Centralised ------ */
+.centralise {
+    text-align: center;
+}
 
 /* ------ SLIDERS ------ */
 
@@ -178,6 +182,11 @@ SAVE THIS FOR MOBILE USAGE
 .btn:hover,
 .btn-large:hover{
     opacity: 1;
+}
+
+.btn:active,
+.btn-large:active{
+    opacity: 0.8;
 }
 
 .list-left{
