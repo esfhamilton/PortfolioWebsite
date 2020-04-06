@@ -2,34 +2,49 @@ window.onload=function() {
 
     document.addEventListener("keydown",keyPush);
     
+    const beep = new Audio('../../resources/audio/morse.wav');
+    
      
     let btnMorse = document.getElementById("btn-morse");
     let incBool =false;
     
-    interval = setInterval(incrementingFunc,1000/300);
+    let temp = document.getElementById("txtBox");
+        temp.innerHTML = txt;
+    
+    btnDownInterval = setInterval(btnDownFunc,1000/300);
     
     btnMorse.onclick = function() {
-        let temp = document.getElementById("temp");
-        temp.innerHTML = "Alright hen, have some patience, there's still work to be done. \n A watched Morse Simulator never boils."
+        temp.innerHTML = txt;
     }
     
     btnMorse.onmousedown = function() {
-        incrementor = 0;
-        incBool=true;
-        interval = setInterval(incrementingFunc,1000/300);
+        timeDown = 0;
+        beep.play();
+        btnDownInterval = setInterval(btnDownFunc,1000/300);
     };
 
     btnMorse.onmouseup = function() {
-        clearInterval(interval);
-        console.log("STOPPED at: "+incrementor);
+        beep.pause();
+        beep.currentTime = 0;
+        clearInterval(btnDownInterval);
+        
+        if(timeDown>100){
+            txt+="-";
+        }
+        else{
+            txt+=".";
+        }
+        
+        console.log("STOPPED at: "+timeDown+txt);
     };      
 
 }
 
-incrementor = 0;
+timeDown = 0;
+txt = "";
 
-function incrementingFunc() {
-    incrementor++;
+function btnDownFunc() {
+    timeDown++;
 }
 
 // Called on keydown event 
