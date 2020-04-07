@@ -1,14 +1,9 @@
 window.onload=function() {
-
-    document.addEventListener("keydown",keyPush);
     
     const beep = new Audio('../../resources/audio/morse.wav');
     
      
-    let btnMorse = document.getElementById("btn-morse");
-    let incBool =false;
-    
-    
+    let btnMorse = document.getElementById("btn-morse");    
     
     btnDownInterval = setInterval(btnDownFunc,1000/300);
     clearInterval(btnDownInterval);
@@ -16,21 +11,11 @@ window.onload=function() {
     btnUpInterval = setInterval(btnUpFunc,1000/300);
     clearInterval(btnUpInterval);
     
-/*    btnMorse.onclick = function() {
-        if(timeUp>80){
-            txt += morseToText(letter);
-            letter="";
-            temp.innerHTML = txt;
-        }
-    }*/
-    
     btnMorse.onmousedown = function() {
         beep.play();
         timeDown = 0;
         clearInterval(btnUpInterval);
         btnDownInterval = setInterval(btnDownFunc,1000/300);
-        
-
     };
 
     btnMorse.onmouseup = function() {
@@ -38,11 +23,11 @@ window.onload=function() {
         beep.currentTime = 0;
         timeUp = 0;
         clearInterval(btnDownInterval);
+        flag = (timeUp>40 ? false : true);
+        flag2 = (timeUp>220 ? false : true);
         btnUpInterval = setInterval(btnUpFunc,1000/300);
         
-        letter += (timeDown>56 ? "-":"•");
-        
-        console.log("STOPPED at: "+timeDown+txt);
+        letter += (timeDown>50 ? "-":"•");
     };      
 
 }
@@ -51,10 +36,12 @@ timeDown = 0;
 timeUp = 0;
 txt = "";
 letter = "";
+flag = true;
+flag2 = true;
 let txtString = document.getElementById("txt");
 txtString.innerHTML = txt;
 let morseString = document.getElementById("morse");
-morseString.innerHTML = letter;
+
 
 function btnDownFunc() {
     timeDown++;
@@ -62,11 +49,22 @@ function btnDownFunc() {
 
 function btnUpFunc() {
     timeUp++;
-    if(timeUp>80){
+    morseString.innerHTML = letter;
+    if(timeUp>40 && flag){
+        flag=false;
+        
+        txt = (txt.length>100?"":txt);
+        
         txt += morseToText(letter);
         letter="";
         txtString.innerHTML = txt;
     }
+    
+    if(timeUp>220 && flag2){
+        txt+=" ";
+        flag2=false;
+    }
+    console.log(timeUp);
 }
 
 /*
@@ -116,31 +114,6 @@ function morseToText(letter) {
     }
 }
 
-// Called on keydown event 
-function keyPush(evt) {
-	switch(evt.keyCode) {
-		// Left arrow
-        case 37:
-            evt.preventDefault();
-            if(xv!=1){xv=-1;yv=0;}
-			break;
-        // Up arrow    
-		case 38:
-            evt.preventDefault();
-			if(yv!=1){xv=0;yv=-1};
-			break;
-        // Right arrow    
-		case 39:
-            evt.preventDefault();
-			if(xv!=-1){xv=1;yv=0};
-			break;
-        // Down arrow    
-		case 40:
-            evt.preventDefault();
-			if(yv!=-1){xv=0;yv=1};
-			break;
-	}
-}
 
 
 
