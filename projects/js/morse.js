@@ -1,35 +1,56 @@
 window.onload=function() {
     
-    const beep = new Audio('../../resources/audio/morse.wav');
-    
-     
     let btnMorse = document.getElementById("btn-morse");    
     
-    btnDownInterval = setInterval(btnDownFunc,1000/300);
-    clearInterval(btnDownInterval);
+    // Declares the Intervals
+    var downIntervalVar = setInterval(downIntervalFunc,1000/300);
+    clearInterval(downIntervalVar);
+    var upIntervalVar = setInterval(upIntervalFunc,1000/300);
+    clearInterval(upIntervalVar);
     
-    btnUpInterval = setInterval(btnUpFunc,1000/300);
-    clearInterval(btnUpInterval);
-    
-    btnMorse.onmousedown = function() {
-        beep.play();
-        timeDown = 0;
-        clearInterval(btnUpInterval);
-        btnDownInterval = setInterval(btnDownFunc,1000/300);
-    };
+    // Check if touch Device as different functions are required
+    var isTouch = ('ontouchstart' in document.documentElement);
 
-    btnMorse.onmouseup = function() {
-        beep.pause();
-        beep.currentTime = 0;
-        timeUp = 0;
-        clearInterval(btnDownInterval);
-        flag = (timeUp>40 ? false : true);
-        flag2 = (timeUp>220 ? false : true);
-        btnUpInterval = setInterval(btnUpFunc,1000/300);
+    // Accomodates for device and runs main functions
+    if (isTouch) {
         
-        letter += (timeDown>50 ? "-":"•");
-    };      
+        btnMorse.addEventListener('touchstart',touchdown);
+        btnMorse.addEventListener('touchend',touchup);
+        
+        function touchdown(ev){
+            onDown();
+            clearInterval(upIntervalVar);
+            downIntervalVar = setInterval(downIntervalFunc,1000/300);
+        }
 
+        function touchup(ev){
+            onUp();
+            clearInterval(downIntervalVar);
+            flag = (timeUp>40 ? false : true);
+            flag2 = (timeUp>220 ? false : true);
+            upIntervalVar = setInterval(upIntervalFunc,1000/300);
+
+            letter += (timeDown>50 ? "-":"•");
+        }
+    }
+    else {
+
+        btnMorse.onmousedown = function() {
+            onDown();
+            clearInterval(upIntervalVar);
+            downIntervalVar = setInterval(downIntervalFunc,1000/300);
+        };
+
+        btnMorse.onmouseup = function() {
+            onUp();
+            clearInterval(downIntervalVar);
+            flag = (timeUp>40 ? false : true);
+            flag2 = (timeUp>220 ? false : true);
+            upIntervalVar = setInterval(upIntervalFunc,1000/300);
+
+            letter += (timeDown>50 ? "-":"•");
+        };   
+    }; 
 }
 
 timeDown = 0;
@@ -41,13 +62,25 @@ flag2 = true;
 let txtString = document.getElementById("txt");
 txtString.innerHTML = txt;
 let morseString = document.getElementById("morse");
+const beep = new Audio('../../resources/audio/morse.wav');
 
 
-function btnDownFunc() {
+function onDown(){
+    beep.play();
+    timeDown = 0;
+}
+
+function onUp(){
+    beep.pause();
+    beep.currentTime = 0;
+    timeUp = 0; 
+}
+
+function downIntervalFunc() {
     timeDown++;
 }
 
-function btnUpFunc() {
+function upIntervalFunc() {
     timeUp++;
     morseString.innerHTML = letter;
     if(timeUp>40 && flag){
@@ -64,7 +97,6 @@ function btnUpFunc() {
         txt+=" ";
         flag2=false;
     }
-    console.log(timeUp);
 }
 
 /*

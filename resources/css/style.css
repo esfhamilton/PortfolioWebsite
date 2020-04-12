@@ -169,6 +169,13 @@ SAVE THIS FOR MOBILE USAGE
     opacity: 0.7;
     color: #00c4ff;
     background-color: #000;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -khtml-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
 .btn-large{
@@ -178,6 +185,13 @@ SAVE THIS FOR MOBILE USAGE
     opacity: 0.8;
     color: #00c4ff;
     background-color: #000;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -khtml-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .btn:hover,
 .btn-large:hover{
