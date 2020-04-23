@@ -1,15 +1,14 @@
 window.onload=function() {
     
-    let btnMorse = document.getElementById("btn-morse");    
+    let btnMorse = document.getElementById("btn-morse");  
+    let btnClear = document.getElementById("btn-clear");    
     
     // Declares the Intervals
-    var downIntervalVar = setInterval(downIntervalFunc,1000/300);
-    clearInterval(downIntervalVar);
-    var upIntervalVar = setInterval(upIntervalFunc,1000/300);
-    clearInterval(upIntervalVar);
+    let downIntervalVar;
+    let upIntervalVar;
     
     // Check if touch Device as different functions are required
-    var isTouch = ('ontouchstart' in document.documentElement);
+    let isTouch = ('ontouchstart' in document.documentElement);
 
     // Accomodates for device and runs main functions
     if (isTouch) {
@@ -30,7 +29,7 @@ window.onload=function() {
             flag2 = (timeUp>220 ? false : true);
             upIntervalVar = setInterval(upIntervalFunc,1000/300);
 
-            letter += (timeDown>50 ? "-":"•");
+            letter += (timeDown>40 ? "-":"•");
         }
     }
     else {
@@ -39,7 +38,7 @@ window.onload=function() {
             onDown();
             clearInterval(upIntervalVar);
             downIntervalVar = setInterval(downIntervalFunc,1000/300);
-        };
+        }
 
         btnMorse.onmouseup = function() {
             onUp();
@@ -48,9 +47,14 @@ window.onload=function() {
             flag2 = (timeUp>220 ? false : true);
             upIntervalVar = setInterval(upIntervalFunc,1000/300);
 
-            letter += (timeDown>50 ? "-":"•");
-        };   
-    }; 
+            letter += (timeDown>40 ? "-":"•");
+        }   
+    }
+    
+    btnClear.onclick = function() {
+        txt=''
+        txtString.innerHTML = txt;
+    };
 }
 
 timeDown = 0;
