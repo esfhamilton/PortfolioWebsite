@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Insert site description here">
+        
+        <!--<link rel="stylesheet" type="text/css" href="vendors/css/normalize.css"> 
+        <link rel="stylesheet" type="text/css" href="vendors/css/Grid.css"> 
+        <link rel="stylesheet" type="text/css" href="vendors/css/animate.css">     
+        <link rel="stylesheet" type="text/css" href="resources/css/queries.css">-->
+        <link rel="stylesheet" type="text/css" href="../resources/css/webfonts/stylesheet.css">
+        <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
+        
+        <title>Synth Labs</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                 <ul class="nav-list js--nav-list">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../more.html">More</a></li>
+                </ul>
+                
+                <!-- SAVE FOR MOBILE USAGE<a class="js--nav-icon"><i class="icon ion-md-menu nav-icon"></i></a> -->
+            </nav>
+        </header>
+        <!--<a href ="#"><ion-icon class = "icon-home" name="home"></ion-icon></a>-->
+        
+        <h1>Synth Labs</h1>
+        <div class="main">
+            <p>Testing</p>
+            <div id="outerContainer">
+                <div id="container">
+                    <div id="item">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="keys">
+            <div data-key="65" class="key">
+              <kbd>A</kbd>
+              <span class="sound">- Synth C</span>
+            </div>
+            <div data-key="83" class="key">
+              <kbd>S</kbd>
+              <span class="sound">- Synth D</span>
+            </div>
+            <div data-key="68" class="key">
+              <kbd>D</kbd>
+              <span class="sound">- Synth E</span>
+            </div>
+            <div data-key="70" class="key">
+              <kbd>F</kbd>
+              <span class="sound">- Synth F</span>
+            </div>
+            <div data-key="71" class="key">
+              <kbd>G</kbd>
+              <span class="sound">- Synth G</span>
+            </div>
+            <div data-key="72" class="key">
+              <kbd>H</kbd>
+              <span class="sound">- Synth A</span>
+            </div>
+            <div data-key="74" class="key">
+              <kbd>J</kbd>
+              <span class="sound">- Synth B</span>
+            </div>
+        </div>
+
+        <audio data-key="65" src="../resources/audio/synth/C1.wav"></audio>
+        <audio data-key="83" src="../resources/audio/synth/D1.wav"></audio>
+        <audio data-key="68" src="../resources/audio/synth/E1.wav"></audio>
+        <audio data-key="70" src="../resources/audio/synth/F1.wav"></audio>
+        <audio data-key="71" src="../resources/audio/synth/G1.wav"></audio>
+        <audio data-key="72" src="../resources/audio/synth/A1.wav"></audio>
+        <audio data-key="74" src="../resources/audio/synth/B1.wav"></audio>
+        
+        
+        <script>
+            function removeTransition(e) {
+                if (e.propertyName !== 'transform') return;
+                e.target.classList.remove('playing');
+            }
+
+            function playSound(e) {
+                // Gets audio file from audio tag in html
+                const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+                // Gets 
+                const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+                if (!audio) return;
+                console.log(e);
+                //console.log(key);
+                key.classList.add('playing');
+                audio.currentTime = 0;
+                audio.play();
+            }
+
+            const keys = Array.from(document.querySelectorAll('.key'));
+            keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+            window.addEventListener('keydown', playSound);
+            window.addEventListener('keyup', endSound);
+        </script>
+        
+        <!--<script>
+            var player = new Tone.Player("../resources/audio/synth/C1.wav").sync().start(0);
+
+            var pitchShift = new Tone.PitchShift({
+                pitch: -5
+            }).toMaster();
+
+            player.connect(pitchShift);
+
+            Tone.Buffer.on('load', () => {
+                alert('Ready for play');
+            });
+
+            window.play = function() {
+                Tone.Transport.start();
+            }
+        </script>-->
+        <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
+        <script src="https://unpkg.com/tone"></script>
+        <script src="https://unpkg.com/@tonejs/ui"></script>
+
+        <script>
+            let loopBeat;
+            let bassSynth;
+            
+            function setup() {
+                bassSynth = new Tone.MembraneSynth().toMaster();
+                
+                loopBeat = new Tone.Loop(song, '4n');
+                
+                Tone.Transport.bpm.value = 140;
+                Tone.Transport.start();
+                loopBeat.start(0);
+            }
+            
+            function song(time) {
+                bassSynth.triggerAttackRelease('G3', '8n', time);
+            }
+        </script>
+        
+        <script src="js/dragndrop.js"></script>
+
+    </body>
+</html>
+
+
+
+
