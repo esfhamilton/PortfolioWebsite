@@ -28,15 +28,15 @@
         </header>
         <!--<a href ="#"><ion-icon class = "icon-home" name="home"></ion-icon></a>-->
         
-        <h1>Synth Labs</h1>
+        <br><h1>Synth Labs</h1>
         <div class="main">
             <p>Testing</p>
-            <div id="outerContainer">
+            <!--<div id="outerContainer">
                 <div id="container">
                     <div id="item">
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
         
         <div class="keys">
@@ -77,9 +77,9 @@
         <audio data-key="71" src="../resources/audio/synth/G1.wav"></audio>
         <audio data-key="72" src="../resources/audio/synth/A1.wav"></audio>
         <audio data-key="74" src="../resources/audio/synth/B1.wav"></audio>
+        <!-- GET RID OF ALL REDUNDANT SHIT ABOVE -->
         
-        
-        <script>
+        <!--<script>
             function removeTransition(e) {
                 if (e.propertyName !== 'transform') return;
                 e.target.classList.remove('playing');
@@ -91,8 +91,6 @@
                 // Gets 
                 const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
                 if (!audio) return;
-                console.log(e);
-                //console.log(key);
                 key.classList.add('playing');
                 audio.currentTime = 0;
                 audio.play();
@@ -102,25 +100,8 @@
             keys.forEach(key => key.addEventListener('transitionend', removeTransition));
             window.addEventListener('keydown', playSound);
             window.addEventListener('keyup', endSound);
-        </script>
-        
-        <!--<script>
-            var player = new Tone.Player("../resources/audio/synth/C1.wav").sync().start(0);
-
-            var pitchShift = new Tone.PitchShift({
-                pitch: -5
-            }).toMaster();
-
-            player.connect(pitchShift);
-
-            Tone.Buffer.on('load', () => {
-                alert('Ready for play');
-            });
-
-            window.play = function() {
-                Tone.Transport.start();
-            }
         </script>-->
+        
         <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
         <script src="https://unpkg.com/tone"></script>
         <script src="https://unpkg.com/@tonejs/ui"></script>
@@ -134,7 +115,7 @@
                 
                 loopBeat = new Tone.Loop(song, '4n');
                 
-                Tone.Transport.bpm.value = 140;
+                //Tone.Transport.bpm.value = 140;
                 Tone.Transport.start();
                 loopBeat.start(0);
             }
@@ -142,9 +123,14 @@
             function song(time) {
                 bassSynth.triggerAttackRelease('G3', '8n', time);
             }
+            
+            setup();
+            song(10);
         </script>
         
+<!--
         <script src="js/dragndrop.js"></script>
+-->
 
     </body>
 </html>
