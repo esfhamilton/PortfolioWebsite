@@ -30,85 +30,17 @@
         
         <br><h1>Synth Labs</h1>
         <div class="main">
-            <p>Testing</p>
-            <!--<div id="outerContainer">
-                <div id="container">
-                    <div id="item">
-                    </div>
-                </div>
-            </div>-->
+            <p>Currently in development- Using Tone.js to create a synth machine<br><br>Try pressing some different keys</p>
         </div>
         
-        <div class="keys">
-            <div data-key="65" class="key">
-              <kbd>A</kbd>
-              <span class="sound">- Synth C</span>
-            </div>
-            <div data-key="83" class="key">
-              <kbd>S</kbd>
-              <span class="sound">- Synth D</span>
-            </div>
-            <div data-key="68" class="key">
-              <kbd>D</kbd>
-              <span class="sound">- Synth E</span>
-            </div>
-            <div data-key="70" class="key">
-              <kbd>F</kbd>
-              <span class="sound">- Synth F</span>
-            </div>
-            <div data-key="71" class="key">
-              <kbd>G</kbd>
-              <span class="sound">- Synth G</span>
-            </div>
-            <div data-key="72" class="key">
-              <kbd>H</kbd>
-              <span class="sound">- Synth A</span>
-            </div>
-            <div data-key="74" class="key">
-              <kbd>J</kbd>
-              <span class="sound">- Synth B</span>
-            </div>
-        </div>
-
-        <audio data-key="65" src="../resources/audio/synth/C1.wav"></audio>
-        <audio data-key="83" src="../resources/audio/synth/D1.wav"></audio>
-        <audio data-key="68" src="../resources/audio/synth/E1.wav"></audio>
-        <audio data-key="70" src="../resources/audio/synth/F1.wav"></audio>
-        <audio data-key="71" src="../resources/audio/synth/G1.wav"></audio>
-        <audio data-key="72" src="../resources/audio/synth/A1.wav"></audio>
-        <audio data-key="74" src="../resources/audio/synth/B1.wav"></audio>
-        <!-- GET RID OF ALL REDUNDANT SHIT ABOVE -->
-        
-        <!--<script>
-            function removeTransition(e) {
-                if (e.propertyName !== 'transform') return;
-                e.target.classList.remove('playing');
-            }
-
-            function playSound(e) {
-                // Gets audio file from audio tag in html
-                const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-                // Gets 
-                const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-                if (!audio) return;
-                key.classList.add('playing');
-                audio.currentTime = 0;
-                audio.play();
-            }
-
-            const keys = Array.from(document.querySelectorAll('.key'));
-            keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-            window.addEventListener('keydown', playSound);
-            window.addEventListener('keyup', endSound);
-        </script>-->
         
         <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
         <script src="https://unpkg.com/tone"></script>
         <script src="https://unpkg.com/@tonejs/ui"></script>
 
         <script>
-            let loopBeat;
-            let bassSynth;
+            /*let loopBeat;
+            let bassSynth;*/
             
             function setup() {
                 bassSynth = new Tone.MembraneSynth().toMaster();
@@ -120,15 +52,26 @@
                 loopBeat.start(0);
             }
             
-            function song(time) {
+            /*function song(time) {
                 bassSynth.triggerAttackRelease('G3', '8n', time);
-            }
+            }*/
             
-            setup();
-            song(10);
+            let mappings = {90:'C1',88:'D1',67:'E1',86:'F1',66:'G1',78:'A1',77:'B1',
+                            65:'C2',83:'D2',68:'E2',70:'F2',71:'G2',72:'A2',74:'B2',
+                            81:'C3',87:'D3',69:'E3',82:'F3',84:'G3',89:'A3',85:'B3'}
+            let bassSynth = new Tone.MembraneSynth().toMaster();
+            document.addEventListener('keydown', function(e) {
+                // Get value of key code from keys
+                let key = e.keyCode;
+                console.log(key);
+                bassSynth.triggerAttackRelease(mappings[key], '4n');
+            })
+            
+            //setup();
+            //song(10);
         </script>
         
-<!--
+<!--    DELETE THIS FILE IF NOT NEEDED
         <script src="js/dragndrop.js"></script>
 -->
 
