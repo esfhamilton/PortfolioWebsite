@@ -30,7 +30,7 @@
         
         <br><h1>Synth Labs</h1>
         <div class="main">
-            <p>Currently in development- Using Tone.js to create a synth machine<br><br>Try pressing some different keys</p>
+            <p>To play synth press:<br>QWERTYU<br> ASDFGHJ<br>ZXCVBNM<br><br>More coming soon...</p>
         </div>
         
         
@@ -39,41 +39,38 @@
         <script src="https://unpkg.com/@tonejs/ui"></script>
 
         <script>
-            /*let loopBeat;
-            let bassSynth;*/
-            
-            function setup() {
-                bassSynth = new Tone.MembraneSynth().toMaster();
-                
-                loopBeat = new Tone.Loop(song, '4n');
-                
-                //Tone.Transport.bpm.value = 140;
-                Tone.Transport.start();
-                loopBeat.start(0);
-            }
-            
-            /*function song(time) {
-                bassSynth.triggerAttackRelease('G3', '8n', time);
-            }*/
-            
             let mappings = {90:'C1',88:'D1',67:'E1',86:'F1',66:'G1',78:'A1',77:'B1',
                             65:'C2',83:'D2',68:'E2',70:'F2',71:'G2',72:'A2',74:'B2',
                             81:'C3',87:'D3',69:'E3',82:'F3',84:'G3',89:'A3',85:'B3'}
-            let bassSynth = new Tone.MembraneSynth().toMaster();
+                        
+            // Defines the attributes for the synthesiser 
+            let synth = new Tone.Synth({
+                oscillator: {
+                type: 'fmsquare',
+                modulationType: 'triangle',
+                modulationIndex: 2,
+                harmonicity: 3
+              },
+              envelope: {
+                attack: 0.001,
+                decay: 0,
+                sustain: 2,
+                release: 5
+              }
+            }).toMaster()
+            
+            synth.volume.value = -30;
+            
             document.addEventListener('keydown', function(e) {
-                // Get value of key code from keys
                 let key = e.keyCode;
-                console.log(key);
-                bassSynth.triggerAttackRelease(mappings[key], '4n');
+                
+                if(mappings[key]!=undefined){ synth.triggerAttack(mappings[key]); }
             })
             
-            //setup();
-            //song(10);
+            document.addEventListener('keyup', function() {
+                synth.triggerRelease();
+            })
         </script>
-        
-<!--    DELETE THIS FILE IF NOT NEEDED
-        <script src="js/dragndrop.js"></script>
--->
 
     </body>
 </html>
