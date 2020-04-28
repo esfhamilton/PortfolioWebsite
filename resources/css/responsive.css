@@ -1,0 +1,23 @@
+/* Small phones: from 0 to 480px */
+@media only screen and (max-width: 480px) {
+    .main {
+        margin: 1em 0.5em;
+    }
+}
+
+/* Small phones to small tablets: from 481 to 767px */
+@media only screen and (max-width: 767px) {
+    .main {
+        margin: 2em 0.5em;
+    }
+}
+
+/* Small phones to big tablets: from 768 to 1023px */
+@media only screen and (max-width: 1023px) {
+
+}
+
+/* Big tablets to 1200px */
+@media only screen and (max-width: 1200px) {
+
+}

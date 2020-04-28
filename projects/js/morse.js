@@ -66,7 +66,7 @@ flag2 = true;
 let txtString = document.getElementById("txt");
 txtString.innerHTML = txt;
 let morseString = document.getElementById("morse");
-const beep = new Audio('../../resources/audio/morse.wav');
+const beep = new Audio('../resources/audio/morse.wav');
 
 
 function onDown(){
