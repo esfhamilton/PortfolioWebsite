@@ -24,7 +24,15 @@ a {
     color: #00c4ff;
 }
 
+/* Slow-motion Zoom Container */
+.img-hover-zoom--slowmo img {
+  transition: transform 100s, filter ease-in-out;
+}
 
+/* The Transformation */
+.img-hover-zoom--slowmo img:hover {
+  transform: scale(5);
+}
 
 /* ------ NAV BAR ------ */
 

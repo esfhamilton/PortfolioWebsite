@@ -204,7 +204,7 @@ window.onload=function() {
             mainCall = setInterval(game,1000/(speedValue*2));
         }
         
-        // Clears focus from slider (may remove this later)
+        // Clears focus from slider
         slider.blur();
     }  
 }
