@@ -56,12 +56,12 @@
             <br><p>More coming soon...</p>
         </div>
         
-<!--
-        <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
--->
-        <script src="https://unpkg.com/tone"></script>
+        <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>-->
         <!--<script src="https://unpkg.com/@tonejs/ui"></script>-->
-
+        <script src="https://unpkg.com/tone"></script>
+        <script src=https://cdn.JsDelivr.net/npm/p5></script>
+        <script src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.dom.min.js></script>
+        <script src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script>
         <script>
             /* 
                 Each of the scales need initialising for the 4 octaves
@@ -151,7 +151,8 @@
 
             // Used to sharpen a note
             let sharpen = false;
-
+            
+            // Called when drop down box is updated
             function updateScale(){
                 var e = document.getElementById("scaleDropDown");
                 scale = e.options[e.selectedIndex].value;
@@ -172,21 +173,6 @@
                 release: 5
               }
             }).toMaster();
-
-            // Defines attributes for drum kick
-            let kick = new Tone.MembraneSynth({
-                effects: [],
-                sound: {
-                    volume: -1,
-                    envelope: {
-                        attack: 0.01,
-                        decay:0.01,
-                        sustain: 0.01
-                    },
-                },
-            }).toMaster();
-
-            //https://codepen.io/bbx/pen/zLybde
 
             // Prevents spontaneous ear drum combustion
             synth.volume.value = -30;
@@ -227,6 +213,50 @@
                 // Stops the note playing infinitely
                 synth.triggerRelease();
             });
+            
+            
+            
+            // DRUMS
+            let kick, hh;
+            let kickBeats, hhBeats;
+            let kickPhrase, hhPhrase;
+            let drums;
+            
+            function setup() {
+                createCanvas(400,400);
+                
+                kick = loadSound('../resources/audio/DrumKit/kick.wav', () => {});
+                hh = loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
+                
+                kickBeats = [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0];
+                hhBeats =   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+                
+                kickPhrase = new p5.Phrase('kick', (time) => {
+                    kick.play(time);
+                }, kickBeats);
+                
+                hhPhrase = new p5.Phrase('hh', (time) => {
+                    hh.play(time);
+                }, hhBeats);
+                
+                drums = new p5.Part();
+                drums.addPhrase(kickPhrase);
+                drums.addPhrase(hhPhrase);
+            }
+            
+            function keyPressed() {
+                if (key === " "){
+                    if (kick.isLoaded() && hh.isLoaded()){
+                        if (!drums.isPlaying){
+                            drums.loop();
+                        }else{
+                            drums.stop();
+                        }
+                    }
+                }
+            }
+            
+
         </script>
     </body>
 </html>
