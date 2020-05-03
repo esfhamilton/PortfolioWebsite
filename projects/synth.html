@@ -64,11 +64,12 @@
         <script src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script>
         <script>
             /* 
-                Each of the scales need initialising for the 4 octaves
-                I've used flats (b) for all of the notation instead
-                of sharps (#) as it sounds the same and reduces the code
-                required for sharpening the notes
+                SYNTHESISER
+                Note: Each of the scales need initialising for the 4 octaves
+                I've used flat only notation (b) as it has the same effect 
+                and reduces the code required for sharpening the notes
             */
+            
             // MAJORS
             // C Major: C D E F G A B
             let C = {90:'C1',88:'D1',67:'E1',86:'F1',66:'G1',78:'A1',77:'B1',
@@ -193,7 +194,7 @@
                 if(scales[scale][key]!=undefined){
                     // Sharpen note based on whether it's marked as a flat or not from scales
                     if(sharpen){
-                        console.log(scales[scale][key][0] + scales[scale][key][1] + scales[scale][key][2]);
+                        // Remove flat if flattened else add sharp '#' 
                         sharpenedKey = (scales[scale][key][1]=='b') ? scales[scale][key][0]+scales[scale][key][2] 
                                                                     : scales[scale][key][0]+"#"+scales[scale][key][1];
                         synth.triggerAttack(sharpenedKey);
@@ -216,20 +217,32 @@
             
             
             
-            // DRUMS
-            let kick, hh;
-            let kickBeats, hhBeats;
-            let kickPhrase, hhPhrase;
+            /*
+                DRUM MACHINE
+                Credit to Dan Tramte for his terrific
+                Drum Sequencer Tutorial from which the
+                following section is based from.
+            */
+            let kick, hh, hho;
+            let kickBeats, hhBeats, hhoBeats;
+            let kickPhrase, hhPhrase, hhoPhrase;
             let drums;
+            let bpmSlider;
+            let numBeats;
+            let cnv;
             
             function setup() {
-                createCanvas(400,400);
+                cnv = createCanvas(320,60);
+                cnv.mousePressed(canvasPressed);
                 
+                numBeats = 16;
                 kick = loadSound('../resources/audio/DrumKit/kick.wav', () => {});
                 hh = loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
+                hho = loadSound('../resources/audio/DrumKit/hhopen.wav', () => {});
                 
                 kickBeats = [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0];
                 hhBeats =   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+                hhoBeats =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                 
                 kickPhrase = new p5.Phrase('kick', (time) => {
                     kick.play(time);
@@ -239,24 +252,84 @@
                     hh.play(time);
                 }, hhBeats);
                 
+                hhoPhrase = new p5.Phrase('hho', (time) => {
+                    hho.play(time);
+                }, hhoBeats);
+                
                 drums = new p5.Part();
                 drums.addPhrase(kickPhrase);
                 drums.addPhrase(hhPhrase);
+                drums.addPhrase(hhoPhrase);
+                
+                bpmSlider = createSlider(30, 600, 80, 1);
+                //bpmSlider.position(10,70);
+                bpmSlider.input(() => {
+                drums.setBPM(bpmSlider.value())});
+                drums.setBPM('80');
+                
+                drawMatrix();
             }
             
             function keyPressed() {
                 if (key === " "){
-                    if (kick.isLoaded() && hh.isLoaded()){
+                    //if(kick.isLoaded()&&hh.isLoaded()&&hho.isLoaded()){
                         if (!drums.isPlaying){
                             drums.loop();
                         }else{
                             drums.stop();
                         }
-                    }
+                    //}
                 }
             }
             
-
+            function canvasPressed() {
+                let rowClicked = floor(3*mouseY/height);
+                // Change 16 to be numBeats
+                let columnClicked = floor(16*mouseX/width)
+                switch (rowClicked){
+                    case 0:
+                        kickBeats[columnClicked]=1-kickBeats[columnClicked];
+                        drawMatrix();
+                        break;
+                    case 1:
+                        hhBeats[columnClicked]=1-hhBeats[columnClicked];
+                        drawMatrix();
+                        break;
+                    case 2:
+                        hhoBeats[columnClicked]=1-hhoBeats[columnClicked];
+                        drawMatrix();
+                        break;
+                }
+            }
+            
+            function drawMatrix() {
+                let cellWidth = width/numBeats;
+                background(80);
+                stroke('gray');
+                strokeWeight(2);
+                for (let i=0; i<numBeats+1;i++){
+                    line(i*cellWidth,0,i*cellWidth,height);
+                }
+                for (let i=0; i<4;i++){
+                    line(0,i*height/3,width,i*height/3);
+                }
+                
+                for (let i=0; i<numBeats;i++){
+                    line(i*cellWidth,0,i*cellWidth,height);
+                }
+                
+                for (let i=0; i<numBeats;i++){
+                    if(kickBeats[i]===1){ 
+                       ellipse(i*cellWidth+0.5*cellWidth,height/6,10);
+                    }
+                    if(hhBeats[i]===1){     
+                        ellipse(i*cellWidth+0.5*cellWidth,height/2,10);
+                    }
+                    if(hhoBeats[i]===1){  
+                        ellipse(i*cellWidth+0.5*cellWidth,5*height/6,10);
+                    }
+                }
+            }
         </script>
     </body>
 </html>

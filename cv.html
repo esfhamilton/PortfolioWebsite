@@ -32,7 +32,7 @@
             
             <div class="main-box">
                 <div class="img-hover-zoom img-hover-zoom--slowmo">
-                    <img src="resources/img/cv.jpg" height="300" width="200" alt="Looking on intensely in front of the pink setting sun of Babylon">
+                    <img id="headshot" onmouseover="activate()" onmouseout="deactivate()" src="resources/img/cv.jpg" height="300" width="200" alt="headshot">
                 </div>
                 <p style="font-family: cursive">"I work hard"</p>
             </div>
@@ -41,6 +41,22 @@
         <!--<script src="resources/js/script.js"></script>-->
         <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
         <script src="resources/js/konami.js"></script>
+        <script>
+            // Load audio before activate() to prevent lag
+            const cvLoop = new Audio('resources/audio/sm64.mp3');
+
+            let img = document.getElementById("headshot");
+            img.onmouseover(activate());
+            
+            function activate() {
+                cvLoop.loop = true;
+                cvLoop.play();
+            }
+            function deactivate() {
+                cvLoop.pause();
+                cvLoop.currentTime = 0;
+            }
+        </script>
     </body>
 </html>
 
