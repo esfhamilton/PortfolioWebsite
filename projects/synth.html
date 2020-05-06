@@ -18,12 +18,9 @@
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="../projects.html">Projects</a></li>
                     <li><a href="../more.html">More</a></li>
-                 </ul>
-                
-                <!-- SAVE FOR MOBILE USAGE<a class="js--nav-icon"><i class="icon ion-md-menu nav-icon"></i></a> -->
+                 </ul>    
             </nav>
         </header>
-        <!--<a href ="#"><ion-icon class = "icon-home" name="home"></ion-icon></a>-->
         
         <br><h1>Synth Labs</h1>
         <div class="main">
@@ -55,6 +52,9 @@
             </form>  
             <br><p>More coming soon...</p>
         </div>
+        <div
+        <button class="btn" id='play'>Play</button>
+        <button class="btn" id='stop'>Stop</button>
         
         <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>-->
         <!--<script src="https://unpkg.com/@tonejs/ui"></script>-->
@@ -162,21 +162,21 @@
             // Defines the attributes for the synthesiser 
             let synth = new Tone.Synth({
                 oscillator: {
-                type: 'fmsquare',
-                modulationType: 'triangle',
-                modulationIndex: 2,
-                harmonicity: 3
-              },
-              envelope: {
-                attack: 0.001,
-                decay: 0,
-                sustain: 2,
-                release: 5
-              }
+                    type: 'fmsquare',
+                    modulationType: 'triangle',
+                    modulationIndex: 2,
+                    harmonicity: 3
+                },
+                envelope: {
+                    attack: 0.001,
+                    decay: 0,
+                    sustain: 2,
+                    release: 5
+                }
             }).toMaster();
 
             // Prevents spontaneous ear drum combustion
-            synth.volume.value = -30;
+            synth.volume.value = -26;
 
             // Called when a key is pressed down
             document.addEventListener('keydown', function(e) {
@@ -220,39 +220,43 @@
             /*
                 DRUM MACHINE
                 Credit to Dan Tramte for his terrific
-                Drum Sequencer Tutorial from which the
+                Drum Sequencer guide from which the
                 following section is based from.
             */
-            let kick, hh, hho;
-            let kickBeats, hhBeats, hhoBeats;
-            let kickPhrase, hhPhrase, hhoPhrase;
-            let drums;
-            let bpmSlider;
-            let numBeats;
-            let cnv;
+            let kickBeats, hhBeats, hhoBeats; // Stores beat pattern 
+            let drums; // p5 part for running each drum phrase simultaneously
+            let numBeats; // Length of the beats list
+            let cnv; // Used to store canvas
+            let sequence; // Sequence of beats for tracing 
+            let cellWidth; // Canvas width/ number of beats 
+            //let btnPlay, btnStop; // Buttons for starting/ stopping drums
             
             function setup() {
                 cnv = createCanvas(320,60);
-                cnv.mousePressed(canvasPressed);
-                
+                cnv.mousePressed(canvasPressed);              
                 numBeats = 16;
-                kick = loadSound('../resources/audio/DrumKit/kick.wav', () => {});
-                hh = loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
-                hho = loadSound('../resources/audio/DrumKit/hhopen.wav', () => {});
+                cellWidth = width/numBeats;
+
+                // Different drum & synth sounds
+                let kick =  loadSound('../resources/audio/DrumKit/kick.wav', () => {});
+                let hh   =  loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
+                let hho  =  loadSound('../resources/audio/DrumKit/hhopen.wav', () => {});
                 
-                kickBeats = [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0];
-                hhBeats =   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
-                hhoBeats =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                kickBeats = [1,0,0,1,0,0,1,0,1,0,1,0,0,0,1,1];
+                hhBeats   = [1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0];
+                hhoBeats  = [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0];
+                sequence  = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
                 
-                kickPhrase = new p5.Phrase('kick', (time) => {
+                // Phrases for adding to drums
+                let kickPhrase = new p5.Phrase('kick', (time) => {
                     kick.play(time);
                 }, kickBeats);
                 
-                hhPhrase = new p5.Phrase('hh', (time) => {
+                let hhPhrase = new p5.Phrase('hh', (time) => {
                     hh.play(time);
                 }, hhBeats);
                 
-                hhoPhrase = new p5.Phrase('hho', (time) => {
+                let hhoPhrase = new p5.Phrase('hho', (time) => {
                     hho.play(time);
                 }, hhoBeats);
                 
@@ -260,32 +264,53 @@
                 drums.addPhrase(kickPhrase);
                 drums.addPhrase(hhPhrase);
                 drums.addPhrase(hhoPhrase);
+                drums.addPhrase('seq',tracer,sequence);
                 
-                bpmSlider = createSlider(30, 600, 80, 1);
-                //bpmSlider.position(10,70);
+                // Slider for modifying beats per minute
+                let bpmSlider = createSlider(30, 600, 80, 1);
+                //bpmSlider.position(x,y);
                 bpmSlider.input(() => {
                 drums.setBPM(bpmSlider.value())});
-                drums.setBPM('80');
+                drums.setBPM('100');
+                
+                let btnPlay = document.getElementById('play');
+                let btnStop = document.getElementById('stop');
+                
+                btnPlay.onclick = function() {
+                    if (!drums.isPlaying){
+                        drums.loop();
+                    }
+                    btnPlay.blur();
+                }
+                
+                btnStop.onclick = function() {
+                    if(drums.isPlaying){
+                        drums.metro.metroTicks = 0;
+                        drums.stop();
+                    }
+                    btnStop.blur();
+                }
                 
                 drawMatrix();
             }
             
             function keyPressed() {
                 if (key === " "){
-                    //if(kick.isLoaded()&&hh.isLoaded()&&hho.isLoaded()){
-                        if (!drums.isPlaying){
-                            drums.loop();
-                        }else{
-                            drums.stop();
-                        }
-                    //}
+                    if (!drums.isPlaying){
+                        /*
+                            Starts drums from beginning 
+                            drums.metro.metroTicks = 0;
+                        */
+                        drums.loop();
+                    }else{
+                        drums.stop();
+                    }
                 }
             }
             
             function canvasPressed() {
                 let rowClicked = floor(3*mouseY/height);
-                // Change 16 to be numBeats
-                let columnClicked = floor(16*mouseX/width)
+                let columnClicked = floor(numBeats*mouseX/width)
                 switch (rowClicked){
                     case 0:
                         kickBeats[columnClicked]=1-kickBeats[columnClicked];
@@ -303,10 +328,10 @@
             }
             
             function drawMatrix() {
-                let cellWidth = width/numBeats;
                 background(80);
                 stroke('gray');
                 strokeWeight(2);
+                fill('white');
                 for (let i=0; i<numBeats+1;i++){
                     line(i*cellWidth,0,i*cellWidth,height);
                 }
@@ -330,6 +355,15 @@
                     }
                 }
             }
+            
+            function tracer(time, beatIndex) {
+                drawMatrix();
+                stroke('purple');
+                fill(255,0,255,35);
+                rect((beatIndex-1)*(cellWidth), 0, cellWidth, height);
+            }
+            
+            
         </script>
     </body>
 </html>
