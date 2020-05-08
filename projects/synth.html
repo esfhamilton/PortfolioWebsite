@@ -176,7 +176,7 @@
             }).toMaster();
 
             // Prevents spontaneous ear drum combustion
-            synth.volume.value = -26;
+            synth.volume.value = -10;
 
             // Called when a key is pressed down
             document.addEventListener('keydown', function(e) {
@@ -219,33 +219,40 @@
             
             /*
                 DRUM MACHINE
-                Credit to Dan Tramte for his terrific
+                Credit to Dan Tramte for his brilliant
                 Drum Sequencer guide from which the
                 following section is based from.
             */
-            let kickBeats, hhBeats, hhoBeats; // Stores beat pattern 
+            let kickBeats, hhBeats, hhoBeats, snareBeats, rsBeats, cbBeats, bassBeats; // Stores beat pattern 
             let drums; // p5 part for running each drum phrase simultaneously
             let numBeats; // Length of the beats list
             let cnv; // Used to store canvas
             let sequence; // Sequence of beats for tracing 
             let cellWidth; // Canvas width/ number of beats 
-            //let btnPlay, btnStop; // Buttons for starting/ stopping drums
             
             function setup() {
-                cnv = createCanvas(320,60);
+                cnv = createCanvas(320,140);
                 cnv.mousePressed(canvasPressed);              
                 numBeats = 16;
                 cellWidth = width/numBeats;
 
                 // Different drum & synth sounds
-                let kick =  loadSound('../resources/audio/DrumKit/kick.wav', () => {});
-                let hh   =  loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
-                let hho  =  loadSound('../resources/audio/DrumKit/hhopen.wav', () => {});
+                let kick  =  loadSound('../resources/audio/DrumKit/kick.wav', () => {});
+                let hh    =  loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
+                let hho   =  loadSound('../resources/audio/DrumKit/hhopen.wav', () => {});
+                let snare =  loadSound('../resources/audio/DrumKit/snare.wav', () => {});
+                let rs    =  loadSound('../resources/audio/DrumKit/rimshot.wav', () => {});
+                let cb    =  loadSound('../resources/audio/DrumKit/cowbell.wav', () => {});
+                let bass  =  loadSound('../resources/audio/DrumKit/bass.wav', () => {});
                 
-                kickBeats = [1,0,0,1,0,0,1,0,1,0,1,0,0,0,1,1];
-                hhBeats   = [1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0];
-                hhoBeats  = [0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0];
-                sequence  = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+                kickBeats  = [1,0,0,0,1,0,0,0,0,0,1,1,1,0,1,0];
+                hhBeats    = [1,0,1,0,1,0,1,0,1,0,1,1,0,0,0,0];
+                hhoBeats   = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                snareBeats = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+                rsBeats    = [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0];
+                cbBeats    = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0];
+                bassBeats  = [1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,0];
+                sequence   = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
                 
                 // Phrases for adding to drums
                 let kickPhrase = new p5.Phrase('kick', (time) => {
@@ -260,10 +267,31 @@
                     hho.play(time);
                 }, hhoBeats);
                 
+                let snarePhrase = new p5.Phrase('snare', (time) => {
+                    snare.play(time);
+                }, snareBeats);
+                
+                let rsPhrase = new p5.Phrase('rs', (time) => {
+                    rs.play(time);
+                }, rsBeats);
+                
+                let cbPhrase = new p5.Phrase('cb', (time) => {
+                    cb.play(time);
+                }, cbBeats);
+                
+                let bassPhrase = new p5.Phrase('bass', (time) => {
+                    bass.play(time);
+                }, bassBeats);
+                
+                // Putting it all together
                 drums = new p5.Part();
                 drums.addPhrase(kickPhrase);
                 drums.addPhrase(hhPhrase);
                 drums.addPhrase(hhoPhrase);
+                drums.addPhrase(snarePhrase);
+                drums.addPhrase(rsPhrase);
+                drums.addPhrase(cbPhrase);
+                drums.addPhrase(bassPhrase);
                 drums.addPhrase('seq',tracer,sequence);
                 
                 // Slider for modifying beats per minute
@@ -297,10 +325,6 @@
             function keyPressed() {
                 if (key === " "){
                     if (!drums.isPlaying){
-                        /*
-                            Starts drums from beginning 
-                            drums.metro.metroTicks = 0;
-                        */
                         drums.loop();
                     }else{
                         drums.stop();
@@ -309,7 +333,7 @@
             }
             
             function canvasPressed() {
-                let rowClicked = floor(3*mouseY/height);
+                let rowClicked = floor(7*mouseY/height);
                 let columnClicked = floor(numBeats*mouseX/width)
                 switch (rowClicked){
                     case 0:
@@ -324,6 +348,22 @@
                         hhoBeats[columnClicked]=1-hhoBeats[columnClicked];
                         drawMatrix();
                         break;
+                    case 3:
+                        snareBeats[columnClicked]=1-snareBeats[columnClicked];
+                        drawMatrix();
+                        break;
+                    case 4:
+                        rsBeats[columnClicked]=1-rsBeats[columnClicked];
+                        drawMatrix();
+                        break;
+                    case 5:
+                        cbBeats[columnClicked]=1-cbBeats[columnClicked];
+                        drawMatrix();
+                        break;
+                    case 6:
+                        bassBeats[columnClicked]=1-bassBeats[columnClicked];
+                        drawMatrix();
+                        break;
                 }
             }
             
@@ -335,8 +375,8 @@
                 for (let i=0; i<numBeats+1;i++){
                     line(i*cellWidth,0,i*cellWidth,height);
                 }
-                for (let i=0; i<4;i++){
-                    line(0,i*height/3,width,i*height/3);
+                for (let i=0; i<7;i++){
+                    line(0,i*height/7,width,i*height/7);
                 }
                 
                 for (let i=0; i<numBeats;i++){
@@ -345,14 +385,26 @@
                 
                 for (let i=0; i<numBeats;i++){
                     if(kickBeats[i]===1){ 
-                       ellipse(i*cellWidth+0.5*cellWidth,height/6,10);
+                       ellipse(i*cellWidth+0.5*cellWidth,height/14,10);
                     }
                     if(hhBeats[i]===1){     
-                        ellipse(i*cellWidth+0.5*cellWidth,height/2,10);
+                        ellipse(i*cellWidth+0.5*cellWidth,3*height/14,10);
                     }
                     if(hhoBeats[i]===1){  
-                        ellipse(i*cellWidth+0.5*cellWidth,5*height/6,10);
+                        ellipse(i*cellWidth+0.5*cellWidth,5*height/14,10);
                     }
+                    if(snareBeats[i]===1){  
+                        ellipse(i*cellWidth+0.5*cellWidth,7*height/14,10);
+                    }
+                    if(rsBeats[i]===1){  
+                        ellipse(i*cellWidth+0.5*cellWidth,9*height/14,10);
+                    }
+                    if(cbBeats[i]===1){  
+                        ellipse(i*cellWidth+0.5*cellWidth,11*height/14,10);
+                    }
+                    if(bassBeats[i]===1){  
+                        ellipse(i*cellWidth+0.5*cellWidth,13*height/14,10);
+                    }                    
                 }
             }
             
