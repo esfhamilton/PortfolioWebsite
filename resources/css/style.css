@@ -177,6 +177,7 @@ SAVE THIS FOR MOBILE USAGE
 /* ------ BUTTONS ------ */
 
 .btn{
+    outline: none;
     margin: 15px 5px;
     font-size: 120%;
     border: 0.1em outset #1f72e3;
@@ -193,6 +194,7 @@ SAVE THIS FOR MOBILE USAGE
 }
 
 .btn-large{
+    outline: none;
     padding: 0px 13px;
     font-size: 140%;
     border: 0.1em outset #1f72e3;
