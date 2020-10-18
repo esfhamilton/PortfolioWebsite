@@ -23,7 +23,7 @@
         </header>
         
         <br><h1>Synth Labs</h1>
-        <div class="main">
+        <div class="main" id="main">
             <p>To play synthesiser press:<br>12345678<br>QWERTYU<br>ASDFGHJ<br>ZXCVBNM<br><br></p>
             <p style="font-size: 80%">Hold Shift to sharpen notes<br><br></p>
  
@@ -50,11 +50,10 @@
                     </optgroup>
                 </select>
             </form>  
-            <br><p>More coming soon...</p>
         </div>
         
-        <button class="btn" id='play'>Play</button>
-        <button class="btn" id='stop'>Stop</button>
+        <button class="btn" id='play' style="position: absolute; left: 27%; bottom: 10%;">Play</button>
+        <button class="btn" id='stop' style="position: absolute; left: 27%; bottom: 1%">Stop</button>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js.map"></script>
@@ -175,7 +174,7 @@
             }).toMaster();
 
             // Prevents spontaneous ear drum combustion
-            synth.volume.value = -10;
+            synth.volume.value = -9;
 
             // Called when a key is pressed down
             document.addEventListener('keydown', function(e) {
@@ -218,7 +217,7 @@
             
             /*
                 DRUM MACHINE
-                Credit to Dan Tramte for his brilliant
+                Credits to Dan Tramte for his brilliant
                 Drum Sequencer guide from which the
                 following section is based from.
             */
@@ -228,13 +227,14 @@
             let cnv; // Used to store canvas
             let sequence; // Sequence of beats for tracing 
             let cellWidth; // Canvas width/ number of beats 
-            
+
             function setup() {
                 cnv = createCanvas(320,140);
-                cnv.mousePressed(canvasPressed);              
+                cnv.mousePressed(canvasPressed);   
                 numBeats = 16;
                 cellWidth = width/numBeats;
-
+                document.querySelector("canvas").style = "position:absolute; left: 50%; width: 400px; margin-left: -200px;";
+                
                 // Different drum & synth sounds
                 let kick  =  loadSound('../resources/audio/DrumKit/kick.wav', () => {});
                 let hh    =  loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
@@ -299,6 +299,7 @@
                 bpmSlider.input(() => {
                 drums.setBPM(bpmSlider.value())});
                 drums.setBPM('100');
+                document.querySelector("input").style = "position: absolute; right: 25%; bottom: 13%;";
                 
                 let btnPlay = document.getElementById('play');
                 let btnStop = document.getElementById('stop');
