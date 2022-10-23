@@ -26,7 +26,6 @@ a {
 
 /* ------ IMG ZOOM ------ */
 img {
-    animation-fill-mode: forwards;
     position: absolute;
     left: 0;
     right: 0;
