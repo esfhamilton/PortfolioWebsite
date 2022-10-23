@@ -451,12 +451,6 @@ function wait(ms) {
 }
 
 function hamiltonianCycle() {
-    /*
-        Behold the dirty block of code which
-        is the Hamiltonian Cycle. 
-        There are much cleaner ways of programming this,
-        but hey it gets the job done.
-    */
     if(px==9&&py==9){xv=1;yv=0;}
     if(px==tc-1&&py==9){xv=0;yv=-1;}
     if(px==tc-1&&py==8){xv=-1;yv=0;}
@@ -676,9 +670,8 @@ function depthFirstSearch() {
 }
 
 function aStarSearch() {
-
     /* 
-        tree contains nested arrays each consisting of:
+        Tree contains nested arrays each consisting of:
         [0] : Heuristic for distance to apple (h(x))
         [1] : x-position of node
         [2] : y-position of node
@@ -751,7 +744,3 @@ function keyPush(evt) {
 			break;
 	}
 }
-
-
-
-

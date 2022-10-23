@@ -24,18 +24,63 @@ a {
     color: #00c4ff;
 }
 
-/* Slow-motion Zoom Container */
-.img-hover-zoom--slowmo img {
-  transition: transform 100s, filter ease-in-out;
+/* ------ IMG ZOOM ------ */
+img {
+    animation-fill-mode: forwards;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
 }
 
-/* The Transformation */
-.img-hover-zoom--slowmo img:hover {
-  transform: scale(5);
+#img-zoom:hover {
+  transform: scale(4);
+  transition: 40s ease;
+}
+
+#img-zoom:not(:hover) {
+  transform: scale(1);
+  transition: 1.5s ease;
+}
+
+#img-zoom:hover img.hs {
+    animation: fadeOut 15s;
+    animation-fill-mode: forwards;
+}
+
+#img-zoom:hover img.hs2 {
+    animation: fadeIn 15s;
+    animation-fill-mode: forwards;
+}
+
+#img-zoom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 176px; 
+    height: 190px;
+}
+
+@keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from{
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* ------ NAV BAR ------ */
-
 nav{
     background-color: #030303;
     text-align: center;
@@ -84,7 +129,6 @@ nav{
 
 
 /* ------ MAIN ------ */
-
 .main {
     display: block;
     color: #fff;
@@ -120,7 +164,6 @@ nav{
 
 
 /* ------ SLIDERS ------ */
-
 .slidecontainer {
   width: 100%;
 }
@@ -160,7 +203,6 @@ nav{
 
 
 /* ------ BUTTONS ------ */
-
 button{
     outline: none;
     opacity: 0.8;
@@ -224,7 +266,6 @@ button{
 
 
 /* ------ ICONS ------ */
-
 ion-icon{
     font-size: 155%;
     padding: 0 10px; 
@@ -272,8 +313,3 @@ ion-icon:hover{
 .icon-close:hover {
     color: #1025c4
 }
-
-
-
-
-

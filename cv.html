@@ -30,23 +30,17 @@
         <div class="main">
             <h1 id="heading">CV</h1>
             
-            <div class="main-box">
-                <div class="img-hover-zoom img-hover-zoom--slowmo">
-                    <img id="headshot" onmouseover="activate()" onmouseout="deactivate()" src="resources/img/cv.jpg" height="300" width="200" alt="headshot">
-                </div>
-                <p style="font-family: cursive">"I work hard"</p>
+            <div id="img-zoom"  style="margin-top:25px;" onmouseover="activate()" onmouseout="deactivate()">
+                <img class="hs2" src="resources/img/cv2.png" width="176" height="190">
+                <img class="hs" src="resources/img/cv.png" width="176" height="190">
             </div>
+            <p style="margin-top:265px; font-family: cursive">"I work hard"</p>
+
         </div>
         
-        <!--<script src="resources/js/script.js"></script>-->
         <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-        <script src="resources/js/konami.js"></script>
         <script>
-            // Load audio before activate() to prevent lag
             const cvLoop = new Audio('resources/audio/sm64.mp3');
-
-            let img = document.getElementById("headshot");
-            img.onmouseover(activate());
             
             function activate() {
                 cvLoop.loop = true;
