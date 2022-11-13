@@ -3,29 +3,27 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Bodacious description here">
         
         <link rel="stylesheet" type="text/css" href="../resources/css/webfonts/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/responsive.css">
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
         <title>Starfighter</title>
-
-        <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
     </head>
     <body>
-        <header>
+        <header class="sticky">
             <nav>
-                 <ul class="nav-list js--nav-list">
+                <ul class="nav-list" id="nav-list">
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="../projects.html">Projects</a></li>
                     <li><a href="../more.html">More</a></li>
                 </ul>
                 
-                <!-- SAVE FOR MOBILE USAGE<a class="js--nav-icon"><i class="icon ion-md-menu nav-icon"></i></a> -->
+                <ion-icon id="nav-expand" onclick="chevron()" name="chevron-down"></ion-icon>
             </nav>
         </header>
-        <!--<a href ="#"><ion-icon class = "icon-home" name="home"></ion-icon></a>-->
         
         <div class="main">
             <h1 id="heading">Starfighter</h1>
@@ -38,13 +36,10 @@
             
             <div class="main-box">
                 <button class = "btn-large" id="download"><a href="https://drive.google.com/file/d/1mcJoXFXqyqeOj2g-tHsvRKS33P3baoQb/view" target="_blank">Download</a></button>
- 
                 <p style="font-size: 75%" id="altLink"></p>
             </div>
         </div>
-
-        <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-
+        <script src="../resources/js/nav-expand.js"></script>
     </body>
 </html>
 
