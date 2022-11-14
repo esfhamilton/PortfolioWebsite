@@ -85,6 +85,10 @@ img {
     width: 100%;
 }
 
+header {
+    z-index: 1;
+}
+
 nav{
     background-color: #030303;
     text-align: center;

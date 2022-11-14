@@ -3,27 +3,30 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Bodacious description here">
         
         <link rel="stylesheet" type="text/css" href="../resources/css/webfonts/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/responsive.css">
-        
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
         <title>Synth Labs</title>
     </head>
     <body>
-        <header>
+        <header class="sticky">
             <nav>
-                 <ul class="nav-list js--nav-list">
+                <ul class="nav-list" id="nav-list">
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="../projects.html">Projects</a></li>
                     <li><a href="../more.html">More</a></li>
                  </ul>    
+
+                 <ion-icon id="nav-expand" onclick="chevron()" name="chevron-down"></ion-icon>
             </nav>
         </header>
         
-        <br><h1>Synth Labs</h1>
-        <div class="main" id="main" style="padding-bottom: 200px">
+        <br><h1 style="margin-top: 1.5em;">Synth Labs</h1>
+        <div class="main" id="main" style="padding-bottom: 200px; margin-top: 2em;">
             <p>To play synthesiser press:<br>12345678<br>QWERTYU<br>ASDFGHJ<br>ZXCVBNM<br><br></p>
             <p style="font-size: 80%">Hold Shift to sharpen notes<br><br></p>
  
@@ -212,9 +215,7 @@
                 // Stops the note playing infinitely
                 synth.triggerRelease();
             });
-            
-            
-            
+      
             /*
                 DRUM MACHINE
                 Credits to Dan Tramte for his 
@@ -417,9 +418,8 @@
                 fill(255,0,255,35);
                 rect((beatIndex-1)*(cellWidth), 0, cellWidth, height);
             }
-            
-            
         </script>
+        <script src="../resources/js/nav-expand.js"></script>
     </body>
 </html>
 
