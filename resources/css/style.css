@@ -80,6 +80,15 @@ img {
 }
 
 /* ------ NAV BAR ------ */
+.sticky {
+    position: fixed;
+    width: 100%;
+}
+
+header {
+    z-index: 1;
+}
+
 nav{
     background-color: #030303;
     text-align: center;
@@ -88,25 +97,12 @@ nav{
 }
 
 .nav-list {
-    /*SAVE FOR MOBILE USAGE
-    display: inline-block;
-    text-align: center;
-    width: 75%;*/
     display: inline-block;
     list-style: none;
     overflow: hidden;
 }
 
 .nav-list li {
-    /* SAVE FOR MOBILE USAGE 
-    display: inline-block;
-    text-align: center;
-    width: 75%;
-    display: inline;
-    padding-top: 0.3em;
-    padding-left: 1.5em;
-    list-style: none;
-    font-size: 100%;*/
     float: left; 
     display: block;
     padding: 14px 52px;
@@ -125,15 +121,13 @@ nav{
     color: #2239e6;
 }
 
-
-
 /* ------ MAIN ------ */
 .main {
     display: block;
     color: #fff;
     max-width: 27em;
     margin: auto;
-    margin-top: 2.5em;
+    margin-top: 5em;
     margin-bottom: 2em;
     padding: 2em;
     border: 4px solid #fff;
@@ -153,9 +147,6 @@ nav{
     font-size: 43px;
 }
 
-
-
-/* ------ Centralised ------ */
 .centralise {
     text-align: center;
 }
@@ -262,8 +253,6 @@ button{
     padding: 15px 10px;
 }
 
-
-
 /* ------ ICONS ------ */
 ion-icon{
     font-size: 155%;
@@ -273,7 +262,7 @@ ion-icon{
 }
 
 ion-icon:hover{
-    color: pink;
+    color: #1f72e3;
 }
 
 .icon-facebook:hover { color: #3b5998; }
@@ -283,32 +272,3 @@ ion-icon:hover{
 .icon-instagram:hover { color: #dd2a7b; }
 
 .icon-github:hover { color: pink; }
-
-
-
-/* CURRENTLY OBSOLETE */
-.mobile-nav-icon {
-    float: right;
-    margin-top: 30px;
-    cursor: pointer;
-    display: none;
-}
-
-.mobile-nav-icon i {
-    font-size: 200%;
-    color: #fff;
-}
-
-.icon-close {
-    font-size: 200%;
-    display: absolute;
-    color: #bbb;
-    float: right;
-    margin-top: 0.3em;
-    margin-right: 0.4em;
-    -webkit-transition: color 0.2s;
-}
-
-.icon-close:hover {
-    color: #1025c4
-}

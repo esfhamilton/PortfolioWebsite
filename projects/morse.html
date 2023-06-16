@@ -3,46 +3,46 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Bodacious description here">
         
         <link rel="stylesheet" type="text/css" href="../resources/css/webfonts/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/responsive.css">
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         
         <title>Morse Simulator</title>
 
     </head>
     <body>
-        <header>
+        <header class="sticky">
             <nav>
-                 <ul class="nav-list js--nav-list">
+                <ul class="nav-list" id="nav-list">
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="../projects.html">Projects</a></li>
                     <li><a href="../more.html">More</a></li>
                 </ul>
                 
-                <!-- SAVE FOR MOBILE USAGE<a class="js--nav-icon"><i class="icon ion-md-menu nav-icon"></i></a> -->
+                <ion-icon id="nav-expand" onclick="chevron()" name="chevron-down"></ion-icon>
             </nav>
         </header>
-        <!--<a href ="#"><ion-icon class = "icon-home" name="home"></ion-icon></a>-->
         
-        <div class="centralise">
+        <div class="centralise" style="margin-top: 3em;">
             <br><h1>Morse Simulator</h1><br>
             <button class = "btn-large" id="btn-morse">Transmit</button>
             <button class = "btn-large" style="color:#eb0000; border: 0.1em outset #eb0000;" id="btn-clear">Clear</button>
         </div>
         
-        <div class="main">
+        <div class="main" style="margin-top: 2em;">
             <p id="morse"></p>
             <br>
             <p id="txt"></p>
         </div>
-        <div class="main">
+        <div class="main" style="margin-top: 0em;">
             <h3 style="font-size: 110%">International Morse Code</h3>
             <p style="font-size: 90%; word-wrap:break-word;">A:•-&nbsp; B:-•••&nbsp; C:-•-•&nbsp; D:-••&nbsp; E:•&nbsp; F:••-•&nbsp; G:--•&nbsp; H:••••&nbsp; I:••&nbsp; J:•---&nbsp; K:-•-&nbsp; L:•-••&nbsp; M:--&nbsp; N:-•&nbsp; O:---&nbsp; P:•--•&nbsp; Q:--•-&nbsp; R:•-•&nbsp; S:•••&nbsp; T:-&nbsp; U:••-&nbsp; V:•••-&nbsp; W:•--&nbsp; X:-••-&nbsp; Y:-•--&nbsp; Z:--••<br>0:----- 1:•---- 2:••--- 3:•••-- 4:••••- 5:••••• 6:-•••• 7:--••• 8:---•• 9:----•</p>
         </div>
         <script src="js/morse.js"></script>
-
+        <script src="../resources/js/nav-expand.js"></script>
     </body>
 </html>
 

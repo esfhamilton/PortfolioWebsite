@@ -3,33 +3,31 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Bodacious description here">
         
         <link rel="stylesheet" type="text/css" href="../resources/css/webfonts/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
         <link rel="stylesheet" type="text/css" href="../resources/css/responsive.css">
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
         <title>Snake Algorithms</title>
-
-        <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
     </head>
     <body>
-        <header>
+        <header class="sticky">
             <nav>
-                 <ul class="nav-list js--nav-list">
+                <ul class="nav-list" id="nav-list">
                     <li><a href="../index.html">Home</a></li>
                     <li><a href="../projects.html">Projects</a></li>
                     <li><a href="../more.html">More</a></li>
                 </ul>
-                
-                <!-- SAVE FOR MOBILE USAGE<a class="js--nav-icon"><i class="icon ion-md-menu nav-icon"></i></a> -->
+
+                <ion-icon id="nav-expand" onclick="chevron()" name="chevron-down"></ion-icon>
             </nav>
         </header>
-        <!--<a href ="#"><ion-icon class = "icon-home" name="home"></ion-icon></a>-->
+        <div style="margin-top: 3em; text-align:center;">
         
-        <br><h1>Snake Algorithms</h1><br>
+            <br><h1>Snake Algorithms</h1><br>
         
-        <div style="text-align: center;">
             <canvas id="gc" width="484" height="484" style="border:3px solid #fff;"></canvas>
             
             <div class="list-left">
@@ -51,14 +49,9 @@
             </div>     
 
         </div>
-        
-        
-        
-        
-        
-        
+
         <script src="js/snake.js"></script>  
-        <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+        <script src="../resources/js/nav-expand.js"></script>
     </body>
 </html>
 
