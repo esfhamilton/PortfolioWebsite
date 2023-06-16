@@ -22,172 +22,100 @@ window.onload=function() {
     
     // Sets up game based on selected algorithm
     modeSetup("None");
-    let mainCall = setInterval(game,1000/speedValue); 
+    let mainCall;
+
+    const restartGame = () => {
+        ctx.font = "50px Determination Mono";
+        clearInterval(mainCall);
+        if(speedValue>0) mainCall = setInterval(game,1000/speedValue); // Calls game speedValue times per second 
+    }
+    
+    const mouseOverState = () => {
+        clearCanvas();
+        clearInterval(mainCall);
+        ctx.fillStyle="#4cd6ff"; 
+        ctx.font = "25px Determination Mono";
+        ctx.textAlign = "center";
+    }
 
     btnManual.onclick =function(){
         modeSetup("Manual");
-        clearInterval(mainCall);
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btnHamiltonian.onclick =function(){
         modeSetup("Hamiltonian");
-        clearInterval(mainCall);
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btnBFS.onclick =function(){
         modeSetup("BFS");
-        clearInterval(mainCall);
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btnDFS.onclick =function(){
         modeSetup("DFS");
-        clearInterval(mainCall);
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btn_aStar.onclick =function(){
         modeSetup("aStar");
-        clearInterval(mainCall);
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
-    // Call game() 20 times per second by default
-	//let mainCall = setInterval(game,1000/speedValue); 
-    
-    /*
-        The onmouseover and onmouseout functions
-        deal with creating descriptive text to 
-        explain the algorithms when hovering
-        over each button.
-    */
     btnManual.onmouseover =function(){
-        clearCanvas();
-        clearInterval(mainCall);
-        ctx.fillStyle="#4cd6ff"; 
-        ctx.font = "30px Determination Mono";
-        ctx.textAlign = "center";
+        mouseOverState();
         ctx.fillText("This algorithm is only as good",canv.width/2, canv.height/2-10);
         ctx.fillText("as the player",canv.width/2, canv.height/2+20);
     };
     
     btnManual.onmouseout =function(){
         clearCanvas();
-        clearInterval(mainCall);
-        ctx.font = "50px Determination Mono";
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btnHamiltonian.onmouseover =function(){
-        clearCanvas();
-        clearInterval(mainCall);
-        ctx.fillStyle="#4cd6ff"; 
-        ctx.font = "25px Determination Mono";
-        ctx.textAlign = "center";
+        mouseOverState();
         lineSplitter("A Hamiltonian cycle is one in which\na cyclic path traverses every node in\na graph. In this case, each node would\n correspond to a position on the grid.\n\nAs such, the snake will eventually\ncomplete the game but you will be\nwaiting a while, even on max speed",3);
     };
 
     btnHamiltonian.onmouseout =function(){
         clearCanvas();
-        clearInterval(mainCall);
-        ctx.font = "50px Determination Mono";
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btnBFS.onmouseover =function(){
-        clearCanvas();
-        clearInterval(mainCall);
-        ctx.fillStyle="#4cd6ff"; 
-        ctx.font = "25px Determination Mono";
-        ctx.textAlign = "center";
+        mouseOverState();
         lineSplitter("Treating the front of the snake as a\nroot node, BFS checks each adjacent\nnode corresponding to the top,\nbottom, left and right positions.\n\nThe distance to the goal is calculated\nfor each position and the shortest\nroute is picked.\n\n Because the algorithm doesn't search\nfurther than 1 position ahead, it is\nprone to colliding with itself when\nother paths are available.",5);
     };
     
     btnBFS.onmouseout =function(){
         clearCanvas();
-        clearInterval(mainCall);
-        ctx.font = "50px Determination Mono";
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btnDFS.onmouseover =function(){
-        clearCanvas();
-        clearInterval(mainCall);
-        ctx.fillStyle="#4cd6ff"; 
-        ctx.font = "25px Determination Mono";
-        ctx.textAlign = "center";
+        mouseOverState();
         lineSplitter("The DFS algorithm is an iterative\nversion of the BFS algorithm which\ncontinues expanding after the root\nnode. This means that a path will be\nfound to the goal, if one exists.\nBecause of this, the snake avoids\ncolliding with itself when another\nopen path is available.\n\nHowever, the snake is still vulnerable\nto coiling around itself into a\nrestricted area in which it will not\nbe able to escape in time, before an\nopening is created.",6);
     };
     
     btnDFS.onmouseout =function(){
         clearCanvas();
-        clearInterval(mainCall);
-        ctx.font = "50px Determination Mono";
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
     
     btn_aStar.onmouseover =function(){
-        clearCanvas();
-        clearInterval(mainCall);
-        ctx.fillStyle="#4cd6ff"; 
-        ctx.font = "25px Determination Mono";
-        ctx.textAlign = "center";
+        mouseOverState();
         lineSplitter("A* Search is essentially a DFS\nalgorithm except involves calculating\nthe optimal direction based on both a\nheuristic and actual cost.\n\nThe heuristic is the Manhattan\ndistance to the goal and the actual\ncost is how many node expansions are\nrequired to get there.\n\nThe algorithm still falls victim to\nthe limitations of DFS but it finds\nmore optimal paths.",5);
     };
     
     btn_aStar.onmouseout =function(){
         clearCanvas();
-        clearInterval(mainCall);
-        ctx.font = "50px Determination Mono";
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
+        restartGame();
     };
-    
     
     // Slider changes call frequency based on value
     slider.oninput = function() {
-        clearInterval(mainCall);
         speedValue = this.value;
         
         // Display for value
@@ -196,21 +124,14 @@ window.onload=function() {
         } else{
             output.innerHTML = this.value;
         }
-        
-        // Stop if 0, max speed if 100
-        if (speedValue==100){
-            mainCall = setInterval(game,1000/0);
-        } else if (speedValue>0) {
-            mainCall = setInterval(game,1000/(speedValue*2));
-        }
-        
-        // Clears focus from slider
-        slider.blur();
+
+        clearInterval(mainCall);
+        if(speedValue>0) mainCall = setInterval(game,1000/speedValue);
     }  
 }
 
 // Used to prevent having to keep creating multiple fillText lines
-function lineSplitter(txt,startPos) {
+const lineSplitter = (txt,startPos) => {
     let spacing = 25;
     let lines = txt.split('\n');
 
@@ -220,22 +141,20 @@ function lineSplitter(txt,startPos) {
 }
 
 // Clears canvas of any text or entities etc.
-function clearCanvas() {
+const clearCanvas = () => {
     ctx.fillStyle="black";
     ctx.fillRect(0,0,canv.width,canv.height);
 }
 
-function modeSetup(mode) {
+const modeSetup = (mode) => {
     clearCanvas();
     // Update global variable for mode 
     this.mode=mode; 
     // Reset game data
     time=0;
     px=py=9;
-    gs=tc=22;
-    cs = 484;
-    ax=ay=15;
-    xv=yv=0;
+    applePosX=applePosY=15;
+    velocityX=velocityY=0;
     trail=[];
     tail = 5; 
     // Style settings for text displays on canvas
@@ -244,131 +163,117 @@ function modeSetup(mode) {
     ctx.textAlign = "center";
     
     if(mode!="None"){
-        wait(200);    
+        wait(300);    
     }
-    
-    /*  FOR WORKING ON 3 2 1 COUNTDOWN
-        if(mode=="Manual"){
-        ctx.fillText("Manual test",canv.width/2, canv.height/2);    
-        console.log("TEST")
-    }*/
 }
 
-// Variable to decide which snake algorithm is used
+const gridSize=22;
+const canvasSize=gridSize**2;
 mode="None";
-// Game timer
 time=0;
-// Player starting position
-px=py=9;
-// Grid size & tile count (gs*gs must equal canvas size)
-gs=tc=22;
-// Canvas size
-cs = 484;
-// Apple starting position 
-ax=ay=15;
-// Velocity
-xv=yv=0;
+px=py=9; // Starting position
+applePosX=applePosY=15;
+velocityX=velocityY=0;
 trail=[];
 tail = 5; 
 
-// Main game function, called repeatedly based on speedValue
-function game() {
-    // Mode must be selected
+const game = () => {
+
     if(mode!="None"){
-        // Condition for ending game either losing or winning
-        if(0<tail && tail<(cs+1)) {
+        if(0<tail && tail<(canvasSize+1)) {
+            clearCanvas();
             time++;
             document.getElementById("timeVal").innerHTML = time;
             document.getElementById("sizeVal").innerHTML = tail;
 
-            // Decides on which algorithm to use based on button pressed
             switch(mode){
 
-                // Hamiltonian Cycle 
                 case "Hamiltonian":
                     hamiltonianCycle();
                     break;
 
-                 // Best-First Search
                 case "BFS":
                     direction = bestFirstSearch();
                     switch(direction) {
                         case 0:
-                            xv=0;yv=-1;            
+                            velocityX=0;velocityY=-1;            
                             break;
                         case 1:
-                            xv=1;yv=0;
+                            velocityX=1;velocityY=0;
                             break;
                         case 2:
-                            xv=0;yv=1;
+                            velocityX=0;velocityY=1;
                             break;
                         case 3:
-                            xv=-1;yv=0;
+                            velocityX=-1;velocityY=0;
                             break; 
                     }
                     break;
                 
-                // Depth-first search 
                 case "DFS":
                     direction = depthFirstSearch();
                     switch(direction) {
                         case 'N':
-                            xv=0;yv=-1;            
+                            velocityX=0;velocityY=-1;            
                             break;
                         case 'E':
-                            xv=1;yv=0;
+                            velocityX=1;velocityY=0;
                             break;
                         case 'S':
-                            xv=0;yv=1;
+                            velocityX=0;velocityY=1;
                             break;
                         case 'W':
-                            xv=-1;yv=0;
+                            velocityX=-1;velocityY=0;
                             break; 
                     }
                     break; 
                     
-                // A*
                 case "aStar":
                     direction = aStarSearch();
                     switch(direction) {
                         case 'N':
-                            xv=0;yv=-1;            
+                            velocityX=0;velocityY=-1;            
                             break;
                         case 'E':
-                            xv=1;yv=0;
+                            velocityX=1;velocityY=0;
                             break;
                         case 'S':
-                            xv=0;yv=1;
+                            velocityX=0;velocityY=1;
                             break;
                         case 'W':
-                            xv=-1;yv=0;
+                            velocityX=-1;velocityY=0;
                             break; 
                     }
                     break;
 
-                // Manual Mode
                 case "Manual":
-                    if(xv==yv){
-                        xv=1;
+                    if(velocityX==velocityY){
+                        velocityX=1;
                     }
             }            
 
             // Ends game if touching wall
-            if(px<0||px>tc-1||py<0||py>tc-1) {
+            if(px<0||px>gridSize-1||py<0||py>gridSize-1) {
                 tail=0;
             }   
 
-            // Clears canvas with each call
-            clearCanvas();
+            // All elements of snake move to position in front
+            trail.push({x:px,y:py});
+            while(trail.length>tail) {
+                trail.shift();
+            }
+
+            px+=velocityX;
+            py+=velocityY;
 
             // Generates snake
             ctx.fillStyle="lime";
             for(var i=0;i<trail.length;i++) {
-                ctx.fillRect(trail[i].x*gs,trail[i].y*gs,gs-2,gs-2);
+                ctx.fillRect(trail[i].x*gridSize,trail[i].y*gridSize,gridSize-2,gridSize-2);
                 // Condition for snake head touching tail
                 if(trail[i].x==px && trail[i].y==py) {
-                    if(tail==cs){
-                        tail=(cs+1); // Flags game complete
+                    if(tail==canvasSize){
+                        tail=(canvasSize+1); // Flags game complete
                     } else{
                         tail = 0; // Flags game over
                     }
@@ -376,25 +281,19 @@ function game() {
                 }
             }
 
-            // All elements of snake move to position in front
-            trail.push({x:px,y:py});
-            while(trail.length>tail) {
-            trail.shift();
-            }
-
             // Changes apple position when 'eaten'
-            if(ax==px && ay==py) {
+            if(applePosX==px && applePosY==py) {
                 tail++;
-                if (tail<cs){
-                    ax=Math.floor(Math.random()*tc);
-                    ay=Math.floor(Math.random()*tc);
+                if (tail<canvasSize){
+                    applePosX=Math.floor(Math.random()*gridSize);
+                    applePosY=Math.floor(Math.random()*gridSize);
                     let repeatFlag=true;
                     while(repeatFlag){
                         repeatFlag = false;
                         for(i=0; i <trail.length;i++){
-                            if(trail[i].x==ax && trail[i].y==ay){
-                                ax=Math.floor(Math.random()*tc);
-                                ay=Math.floor(Math.random()*tc);
+                            if(trail[i].x==applePosX && trail[i].y==applePosY){
+                                applePosX=Math.floor(Math.random()*gridSize);
+                                applePosY=Math.floor(Math.random()*gridSize);
                                 repeatFlag=true;
                             }  
                         }
@@ -402,13 +301,9 @@ function game() {
                 }
             }
 
-            // Position updates based on velocity value
-            px+=xv;
-            py+=yv;
-
             // Generates apple
             ctx.fillStyle="red";
-            ctx.fillRect(ax*gs,ay*gs,gs-2,gs-2);    
+            ctx.fillRect(applePosX*gridSize,applePosY*gridSize,gridSize-2,gridSize-2);    
         } 
         
         // Game Over
@@ -418,6 +313,7 @@ function game() {
             ctx.fillText("Game Over",canv.width/2, canv.height/2);
         
         } 
+
         // Game Complete
         else {
             clearCanvas();
@@ -433,72 +329,62 @@ function game() {
     }
 }
 
-
-
-function countdown() {
-    clearCanvas();
-    ctx.fillStyle="white"; 
-    ctx.font = "50px Determination Mono";
-    ctx.textAlign = "center";
-    ctx.fillText("TEST",canv.width/2, canv.height/2);
-}
-
-function wait(ms) {
+const wait = (ms) => {
     var d = new Date();
     var d2 = null;
     do { d2 = new Date();} 
     while(d2-d < ms);
 }
 
-function hamiltonianCycle() {
-    if(px==9&&py==9){xv=1;yv=0;}
-    if(px==tc-1&&py==9){xv=0;yv=-1;}
-    if(px==tc-1&&py==8){xv=-1;yv=0;}
-    if(px==1&&py==8){xv=0;yv=-1;}
-    if(px==1&&py==7){xv=1;yv=0;}
-    if(px==tc-1&&py==7){xv=0;yv=-1;}
-    if(px==tc-1&&py==6){xv=-1;yv=0;}
-    if(px==1&&py==6){xv=0;yv=-1;}
-    if(px==1&&py==5){xv=1;yv=0;}
-    if(px==tc-1&&py==5){xv=0;yv=-1;}
-    if(px==tc-1&&py==4){xv=-1;yv=0;}
-    if(px==1&&py==4){xv=0;yv=-1;}
-    if(px==1&&py==3){xv=1;yv=0;}
-    if(px==tc-1&&py==3){xv=0;yv=-1;}
-    if(px==tc-1&&py==2){xv=-1;yv=0;}
-    if(px==1&&py==2){xv=0;yv=-1;}
-    if(px==1&&py==1){xv=1;yv=0;}
-    if(px==tc-1&&py==1){xv=0;yv=-1;}
-    if(px==tc-1&&py==0){xv=-1;yv=0;}
-    if(px==0&&py==0){xv=0;yv=1;}
-    if(px==0&&py==tc-1){xv=1;yv=0;}
-    if(px==tc-1&&py==tc-1){xv=0;yv=-1;}
-    if(px==tc-1&&py==20){xv=-1;yv=0;}
-    if(px==1&&py==20){xv=0;yv=-1;}
-    if(px==1&&py==19){xv=1;yv=0;}
-    if(px==tc-1&&py==19){xv=0;yv=-1;}
-    if(px==tc-1&&py==18){xv=-1;yv=0;}
-    if(px==1&&py==18){xv=0;yv=-1;}
-    if(px==1&&py==17){xv=1;yv=0;}
-    if(px==tc-1&&py==17){xv=0;yv=-1;}
-    if(px==tc-1&&py==16){xv=-1;yv=0;}
-    if(px==1&&py==16){xv=0;yv=-1;}
-    if(px==1&&py==15){xv=1;yv=0;}
-    if(px==tc-1&&py==15){xv=0;yv=-1;}
-    if(px==tc-1&&py==14){xv=-1;yv=0;}
-    if(px==1&&py==14){xv=0;yv=-1;}
-    if(px==1&&py==13){xv=1;yv=0;}
-    if(px==tc-1&&py==13){xv=0;yv=-1;}
-    if(px==tc-1&&py==12){xv=-1;yv=0;}
-    if(px==1&&py==12){xv=0;yv=-1;}
-    if(px==1&&py==11){xv=1;yv=0;}
-    if(px==tc-1&&py==11){xv=0;yv=-1;}
-    if(px==tc-1&&py==10){xv=-1;yv=0;}
-    if(px==1&&py==10){xv=0;yv=-1;}
-    if(px==1&&py==9){xv=1;yv=0;}
+const hamiltonianCycle = () => {
+    if(px==9&&py==9){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==9){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==8){velocityX=-1;velocityY=0;}
+    if(px==1&&py==8){velocityX=0;velocityY=-1;}
+    if(px==1&&py==7){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==7){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==6){velocityX=-1;velocityY=0;}
+    if(px==1&&py==6){velocityX=0;velocityY=-1;}
+    if(px==1&&py==5){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==5){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==4){velocityX=-1;velocityY=0;}
+    if(px==1&&py==4){velocityX=0;velocityY=-1;}
+    if(px==1&&py==3){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==3){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==2){velocityX=-1;velocityY=0;}
+    if(px==1&&py==2){velocityX=0;velocityY=-1;}
+    if(px==1&&py==1){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==1){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==0){velocityX=-1;velocityY=0;}
+    if(px==0&&py==0){velocityX=0;velocityY=1;}
+    if(px==0&&py==gridSize-1){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==gridSize-1){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==20){velocityX=-1;velocityY=0;}
+    if(px==1&&py==20){velocityX=0;velocityY=-1;}
+    if(px==1&&py==19){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==19){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==18){velocityX=-1;velocityY=0;}
+    if(px==1&&py==18){velocityX=0;velocityY=-1;}
+    if(px==1&&py==17){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==17){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==16){velocityX=-1;velocityY=0;}
+    if(px==1&&py==16){velocityX=0;velocityY=-1;}
+    if(px==1&&py==15){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==15){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==14){velocityX=-1;velocityY=0;}
+    if(px==1&&py==14){velocityX=0;velocityY=-1;}
+    if(px==1&&py==13){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==13){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==12){velocityX=-1;velocityY=0;}
+    if(px==1&&py==12){velocityX=0;velocityY=-1;}
+    if(px==1&&py==11){velocityX=1;velocityY=0;}
+    if(px==gridSize-1&&py==11){velocityX=0;velocityY=-1;}
+    if(px==gridSize-1&&py==10){velocityX=-1;velocityY=0;}
+    if(px==1&&py==10){velocityX=0;velocityY=-1;}
+    if(px==1&&py==9){velocityX=1;velocityY=0;}
 }
 
-function bestFirstSearch() {
+const bestFirstSearch = () => {
     
     // Set directional positions relative to snake head
     nx=sx=px;
@@ -507,31 +393,25 @@ function bestFirstSearch() {
     sy=py+1;
     ex=px+1;
     wx=px-1;
-    
-    /*// Manhattan distances from directional positions to apple
-    nd = Math.abs(ax-nx)+Math.abs(ay-ny);
-    ed = Math.abs(ax-ex)+Math.abs(ay-ey);
-    sd = Math.abs(ax-sx)+Math.abs(ay-sy);
-    wd = Math.abs(ax-wx)+Math.abs(ay-wy);*/
-    
-    // Alt-formula for distances, snake moves diagonally 
-    nd = Math.sqrt(Math.pow((nx-ax),2)+Math.pow((ny-ay),2));
-    ed = Math.sqrt(Math.pow((ex-ax),2)+Math.pow((ey-ay),2));
-    sd = Math.sqrt(Math.pow((sx-ax),2)+Math.pow((sy-ay),2));
-    wd = Math.sqrt(Math.pow((wx-ax),2)+Math.pow((wy-ay),2));
+
+    // Manhattan distances from directional positions to apple
+    nd = Math.abs(applePosX-nx)+Math.abs(applePosY-ny);
+    ed = Math.abs(applePosX-ex)+Math.abs(applePosY-ey);
+    sd = Math.abs(applePosX-sx)+Math.abs(applePosY-sy);
+    wd = Math.abs(applePosX-wx)+Math.abs(applePosY-wy);
     
     // Adds poor distance score (9999) to direction which collides with tail or wall
     for(var i=0; i <trail.length;i++){
-        if (nx==trail[i].x && ny==trail[i].y || ny==-1 || ny==tc){
+        if (nx==trail[i].x && ny==trail[i].y || ny==-1 || ny==gridSize){
             nd=9999;
         }
-        if (ex==trail[i].x && ey==trail[i].y || ex==-1 || ex==tc){
+        if (ex==trail[i].x && ey==trail[i].y || ex==-1 || ex==gridSize){
             ed=9999;
         }
-        if (sx==trail[i].x && sy==trail[i].y || sy==-1 || sy==tc){
+        if (sx==trail[i].x && sy==trail[i].y || sy==-1 || sy==gridSize){
             sd=9999;
         }
-        if (wx==trail[i].x && wy==trail[i].y || wx==-1 || wx==tc){
+        if (wx==trail[i].x && wy==trail[i].y || wx==-1 || wx==gridSize){
             wd=9999;
         }
     } 
@@ -554,7 +434,7 @@ function bestFirstSearch() {
     return(direction);
 }
 
-function expandNode(x,y,cost,direction,tree){
+const expandNode = (x,y,cost,direction,tree) => {
     
     // Set directional positions relative to snake head
     nx=sx=x;
@@ -565,29 +445,23 @@ function expandNode(x,y,cost,direction,tree){
     wx=x-1;
     
     // Manhattan distances from directional positions to apple
-    nd = Math.abs(ax-nx)+Math.abs(ay-ny);
-    ed = Math.abs(ax-ex)+Math.abs(ay-ey);
-    sd = Math.abs(ax-sx)+Math.abs(ay-sy);
-    wd = Math.abs(ax-wx)+Math.abs(ay-wy);
-    
-    /*// Alt-formula for distances, snake moves diagonally 
-    nd = Math.sqrt(Math.pow((nx-ax),2)+Math.pow((ny-ay),2));
-    ed = Math.sqrt(Math.pow((ex-ax),2)+Math.pow((ey-ay),2));
-    sd = Math.sqrt(Math.pow((sx-ax),2)+Math.pow((sy-ay),2));
-    wd = Math.sqrt(Math.pow((wx-ax),2)+Math.pow((wy-ay),2));*/
+    nd = Math.abs(applePosX-nx)+Math.abs(applePosY-ny);
+    ed = Math.abs(applePosX-ex)+Math.abs(applePosY-ey);
+    sd = Math.abs(applePosX-sx)+Math.abs(applePosY-sy);
+    wd = Math.abs(applePosX-wx)+Math.abs(applePosY-wy);
     
     // Poor distance score if wall or tail
     for(var i=0; i <trail.length;i++){
-        if (nx==trail[i].x && ny==trail[i].y || ny==-1 || ny==tc){
+        if (nx==trail[i].x && ny==trail[i].y || ny==-1 || ny==gridSize){
             nd=9999;
         }
-        if (ex==trail[i].x && ey==trail[i].y || ex==-1 || ex==tc){
+        if (ex==trail[i].x && ey==trail[i].y || ex==-1 || ex==gridSize){
             ed=9999;
         }
-        if (sx==trail[i].x && sy==trail[i].y || sy==-1 || sy==tc){
+        if (sx==trail[i].x && sy==trail[i].y || sy==-1 || sy==gridSize){
             sd=9999;
         }
-        if (wx==trail[i].x && wy==trail[i].y || wx==-1 || wx==tc){
+        if (wx==trail[i].x && wy==trail[i].y || wx==-1 || wx==gridSize){
             wd=9999;
         }
     } 
@@ -622,7 +496,7 @@ function expandNode(x,y,cost,direction,tree){
     return(tree); 
 }
 
-function depthFirstSearch() {
+const depthFirstSearch = () => {
     
      /* 
         tree contains nested arrays each consisting of:
@@ -669,7 +543,7 @@ function depthFirstSearch() {
     return(direction);
 }
 
-function aStarSearch() {
+const aStarSearch = () => {
     /* 
         Tree contains nested arrays each consisting of:
         [0] : Heuristic for distance to apple (h(x))
@@ -719,28 +593,33 @@ function aStarSearch() {
     return(direction);
 }
 
+const willCollideWithTrail = (xOffset, yOffset) => {
+    if(trail.find((t) => (t.x === px+xOffset && t.y === py+yOffset))) return true;
+    return false;
+}
+
 // Controls for changing direction if playing/ testing
-function keyPush(evt) {
+const keyPush = (evt) => {
 	switch(evt.keyCode) {
 		// Left arrow
         case 37:
             evt.preventDefault();
-            if(xv!=1){xv=-1;yv=0;}
+            if(!willCollideWithTrail(-1,0)){velocityX=-1;velocityY=0;}
 			break;
         // Up arrow    
 		case 38:
             evt.preventDefault();
-			if(yv!=1){xv=0;yv=-1};
+			if(!willCollideWithTrail(0,-1)){velocityX=0;velocityY=-1};
 			break;
         // Right arrow    
 		case 39:
             evt.preventDefault();
-			if(xv!=-1){xv=1;yv=0};
+			if(!willCollideWithTrail(1,0)){velocityX=1;velocityY=0};
 			break;
         // Down arrow    
 		case 40:
             evt.preventDefault();
-			if(yv!=-1){xv=0;yv=1};
+			if(!willCollideWithTrail(0,1)){velocityX=0;velocityY=1};
 			break;
 	}
 }
