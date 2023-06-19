@@ -223,7 +223,7 @@ const game = () => {
             let direction;
             switch(mode){
                 case "Hamiltonian":
-                    direction = hamiltonianCycle(headPosX, headPosY);
+                    direction = hamiltonianCycle();
                     updateVelocity(direction);
                     break;
 
@@ -324,13 +324,13 @@ const wait = (ms) => {
     while(d2-d < ms);
 }
 
-const hamiltonianCycle = (x,y) => {
-    if(y !== gridDimension-1 && x===0) return 'S';
-    if(y%2 === 1){
-        if(x === gridDimension-1) return 'N';
+const hamiltonianCycle = () => {
+    if(headPosY !== gridDimension-1 && headPosX===0) return 'S';
+    if(headPosY%2 === 1){
+        if(headPosX === gridDimension-1) return 'N';
         return 'E';
     }
-    if(y!==0 && x===1) return 'N';
+    if(headPosY!==0 && headPosX===1) return 'N';
     return 'W';
 }
 
