@@ -155,7 +155,7 @@ const modeSetup = (mode) => {
     applePosX=applePosY=15;
     velocityX=velocityY=0;
     trail=[];
-    tail = 4; 
+    tailSize = 4; 
     // Style settings for text displays on canvas
     ctx.fillStyle="white"; 
     ctx.font = "50px Determination Mono";
@@ -170,11 +170,11 @@ const gridDimension=22;
 const canvasSize=gridDimension**2;
 mode="None";
 time=0;
-headPosX=headPosY=9; // Starting position
+headPosX=headPosY=9; 
 applePosX=applePosY=15;
 velocityX=velocityY=0;
 trail=[];
-tail = 4; 
+tailSize = 4; 
 
 const updateVelocity = (direction) => {
     switch(direction) {
@@ -214,16 +214,17 @@ const getAvailableSpaces = () => {
 
 const game = () => {
     if(mode!="None"){
-        if(0<tail && tail<(canvasSize+1)) {
+        if(0<tailSize && tailSize<(canvasSize+1)) {
             clearCanvas();
             time++;
             document.getElementById("timeVal").innerHTML = time;
-            document.getElementById("sizeVal").innerHTML = tail+1;
+            document.getElementById("sizeVal").innerHTML = tailSize+1;
             
             let direction;
             switch(mode){
                 case "Hamiltonian":
-                    hamiltonianCycle();
+                    direction = hamiltonianCycle(headPosX, headPosY);
+                    updateVelocity(direction);
                     break;
 
                 case "BFS":
@@ -249,12 +250,12 @@ const game = () => {
 
             // Ends game if touching wall
             if(headPosX<0||headPosX>gridDimension-1||headPosY<0||headPosY>gridDimension-1) {
-                tail=0;
+                tailSize=0;
             }   
 
             // All elements of snake move to position in front
             trail.push({x:headPosX,y:headPosY});
-            while(trail.length>tail) {
+            while(trail.length>tailSize) {
                 trail.shift();
             }
 
@@ -267,10 +268,10 @@ const game = () => {
                 ctx.fillRect(trail[i].x*gridDimension,trail[i].y*gridDimension,gridDimension-2,gridDimension-2);
                 // Condition for snake head touching tail
                 if(trail[i].x==headPosX && trail[i].y==headPosY) {
-                    if(tail==canvasSize){
-                        tail=(canvasSize+1); // Flags game complete
+                    if(tailSize==canvasSize){
+                        tailSize=(canvasSize+1); // Flags game complete
                     } else{
-                        tail = 0; // Flags game over
+                        tailSize = 0; // Flags game over
                     }
 
                 }
@@ -279,8 +280,8 @@ const game = () => {
 
             // Changes apple position when 'eaten'
             if(applePosX===headPosX && applePosY===headPosY) {
-                tail++;
-                if (tail<canvasSize){
+                tailSize++;
+                if (tailSize<canvasSize){
                     let availableSpaces = getAvailableSpaces();
                     let newApplePosition = availableSpaces[Math.floor(Math.random()*(availableSpaces.length-1))];
                     applePosX = newApplePosition.x;    
@@ -294,7 +295,7 @@ const game = () => {
         } 
         
         // Game Over
-        else if(tail==0) {
+        else if(tailSize==0) {
             clearCanvas();
             ctx.fillStyle="red"; 
             ctx.fillText("Game Over",canv.width/2, canv.height/2);
@@ -323,52 +324,14 @@ const wait = (ms) => {
     while(d2-d < ms);
 }
 
-const hamiltonianCycle = () => {
-    if(headPosX==9&&headPosY==9){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==9){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==8){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==8){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==7){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==7){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==6){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==6){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==5){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==5){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==4){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==4){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==3){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==3){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==2){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==2){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==1){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==1){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==0){velocityX=-1;velocityY=0;}
-    if(headPosX==0&&headPosY==0){velocityX=0;velocityY=1;}
-    if(headPosX==0&&headPosY==gridDimension-1){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==gridDimension-1){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==20){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==20){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==19){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==19){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==18){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==18){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==17){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==17){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==16){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==16){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==15){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==15){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==14){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==14){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==13){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==13){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==12){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==12){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==11){velocityX=1;velocityY=0;}
-    if(headPosX==gridDimension-1&&headPosY==11){velocityX=0;velocityY=-1;}
-    if(headPosX==gridDimension-1&&headPosY==10){velocityX=-1;velocityY=0;}
-    if(headPosX==1&&headPosY==10){velocityX=0;velocityY=-1;}
-    if(headPosX==1&&headPosY==9){velocityX=1;velocityY=0;}
+const hamiltonianCycle = (x,y) => {
+    if(y !== gridDimension-1 && x===0) return 'S';
+    if(y%2 === 1){
+        if(x === gridDimension-1) return 'N';
+        return 'E';
+    }
+    if(y!==0 && x===1) return 'N';
+    return 'W';
 }
 
 const bestFirstSearch = () => {
