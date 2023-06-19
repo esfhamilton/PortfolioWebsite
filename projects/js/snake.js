@@ -174,8 +174,9 @@ const modeSetup = (mode) => {
     tailSize = 4; 
     // Style settings for text displays on canvas
     ctx.fillStyle="white"; 
-    ctx.font = "50px Determination Mono";
+    ctx.font = "35px Determination Mono";
     ctx.textAlign = "center";
+    ctx.fillText("Select an algorithm",canv.width/2, canv.height/2);
     
     if(mode!="None"){
         wait(300);    
