@@ -8,7 +8,6 @@ window.onload=function() {
     let slider = document.getElementById("speedSlider");
     let output = document.getElementById("speedVal");
     output.innerHTML = slider.value;
-
     
     // Initial speed variable
     let speedValue = 10;
@@ -43,26 +42,6 @@ window.onload=function() {
         restartGame();
     };
     
-    btnHamiltonian.onclick =function(){
-        modeSetup("Hamiltonian");
-        restartGame();
-    };
-    
-    btnBFS.onclick =function(){
-        modeSetup("BFS");
-        restartGame();
-    };
-    
-    btnDFS.onclick =function(){
-        modeSetup("DFS");
-        restartGame();
-    };
-    
-    btn_aStar.onclick =function(){
-        modeSetup("aStar");
-        restartGame();
-    };
-    
     btnManual.onmouseover =function(){
         mouseOverState();
         ctx.fillText("This algorithm is only as good",canv.width/2, canv.height/2-10);
@@ -74,6 +53,11 @@ window.onload=function() {
         restartGame();
     };
     
+    btnHamiltonian.onclick =function(){
+        modeSetup("Hamiltonian");
+        restartGame();
+    };
+
     btnHamiltonian.onmouseover =function(){
         mouseOverState();
         lineSplitter("A Hamiltonian cycle is one in which\na cyclic path traverses every node in\na graph. In this case, each node would\n correspond to a position on the grid.\n\nAs such, the snake will eventually\ncomplete the game but you will be\nwaiting a while, even on max speed",3);
@@ -84,6 +68,11 @@ window.onload=function() {
         restartGame();
     };
     
+    btnBFS.onclick =function(){
+        modeSetup("BFS");
+        restartGame();
+    };
+
     btnBFS.onmouseover =function(){
         mouseOverState();
         lineSplitter("Treating the front of the snake as a\nroot node, BFS checks each adjacent\nnode corresponding to the top,\nbottom, left and right positions.\n\nThe distance to the goal is calculated\nfor each position and the shortest\nroute is picked.\n\n Because the algorithm doesn't search\nfurther than 1 position ahead, it is\nprone to colliding with itself when\nother paths are available.",5);
@@ -94,6 +83,11 @@ window.onload=function() {
         restartGame();
     };
     
+    btnDFS.onclick =function(){
+        modeSetup("DFS");
+        restartGame();
+    };
+
     btnDFS.onmouseover =function(){
         mouseOverState();
         lineSplitter("The DFS algorithm is an iterative\nversion of the BFS algorithm which\ncontinues expanding after the root\nnode. This means that a path will be\nfound to the goal, if one exists.\nBecause of this, the snake avoids\ncolliding with itself when another\nopen path is available.\n\nHowever, the snake is still vulnerable\nto coiling around itself into a\nrestricted area in which it will not\nbe able to escape in time, before an\nopening is created.",6);
@@ -101,6 +95,11 @@ window.onload=function() {
     
     btnDFS.onmouseout =function(){
         clearCanvas();
+        restartGame();
+    };
+    
+    btn_aStar.onclick =function(){
+        modeSetup("aStar");
         restartGame();
     };
     
@@ -113,7 +112,7 @@ window.onload=function() {
         clearCanvas();
         restartGame();
     };
-    
+
     // Slider changes call frequency based on value
     slider.oninput = function() {
         speedValue = this.value;
@@ -152,11 +151,11 @@ const modeSetup = (mode) => {
     this.mode=mode; 
     // Reset game data
     time=0;
-    px=py=9;
+    headPosX=headPosY=9;
     applePosX=applePosY=15;
     velocityX=velocityY=0;
     trail=[];
-    tail = 5; 
+    tail = 4; 
     // Style settings for text displays on canvas
     ctx.fillStyle="white"; 
     ctx.font = "50px Determination Mono";
@@ -167,85 +166,81 @@ const modeSetup = (mode) => {
     }
 }
 
-const gridSize=22;
-const canvasSize=gridSize**2;
+const gridDimension=22;
+const canvasSize=gridDimension**2;
 mode="None";
 time=0;
-px=py=9; // Starting position
+headPosX=headPosY=9; // Starting position
 applePosX=applePosY=15;
 velocityX=velocityY=0;
 trail=[];
-tail = 5; 
+tail = 4; 
+
+const updateVelocity = (direction) => {
+    switch(direction) {
+        case 'N':
+            velocityX=0;velocityY=-1;            
+            break;
+        case 'E':
+            velocityX=1;velocityY=0;
+            break;
+        case 'S':
+            velocityX=0;velocityY=1;
+            break;
+        case 'W':
+            velocityX=-1;velocityY=0;
+            break; 
+    }   
+}
+
+const isAvailableSpace = (x,y) => {
+    return (!trail.find((trailPos) => trailPos.x === x && trailPos.y === y) 
+            && !(headPosX === x && headPosY ===y)
+            && x >= 0 
+            && x < gridDimension
+            && y >= 0 
+            && y < gridDimension)
+}
+
+const getAvailableSpaces = () => {
+    let availableSpaces = [];
+    for(x=0; x<gridDimension; x++){
+        for(y=0; y<gridDimension; y++){
+            if(isAvailableSpace(x,y)) availableSpaces.push({x: x, y: y})
+        }
+    }
+    return availableSpaces;
+}
 
 const game = () => {
-
     if(mode!="None"){
         if(0<tail && tail<(canvasSize+1)) {
             clearCanvas();
             time++;
             document.getElementById("timeVal").innerHTML = time;
-            document.getElementById("sizeVal").innerHTML = tail;
-
+            document.getElementById("sizeVal").innerHTML = tail+1;
+            
+            let direction;
             switch(mode){
-
                 case "Hamiltonian":
                     hamiltonianCycle();
                     break;
 
                 case "BFS":
                     direction = bestFirstSearch();
-                    switch(direction) {
-                        case 0:
-                            velocityX=0;velocityY=-1;            
-                            break;
-                        case 1:
-                            velocityX=1;velocityY=0;
-                            break;
-                        case 2:
-                            velocityX=0;velocityY=1;
-                            break;
-                        case 3:
-                            velocityX=-1;velocityY=0;
-                            break; 
-                    }
+                    updateVelocity(direction);
                     break;
                 
                 case "DFS":
                     direction = depthFirstSearch();
-                    switch(direction) {
-                        case 'N':
-                            velocityX=0;velocityY=-1;            
-                            break;
-                        case 'E':
-                            velocityX=1;velocityY=0;
-                            break;
-                        case 'S':
-                            velocityX=0;velocityY=1;
-                            break;
-                        case 'W':
-                            velocityX=-1;velocityY=0;
-                            break; 
-                    }
+                    updateVelocity(direction);
                     break; 
                     
                 case "aStar":
                     direction = aStarSearch();
-                    switch(direction) {
-                        case 'N':
-                            velocityX=0;velocityY=-1;            
-                            break;
-                        case 'E':
-                            velocityX=1;velocityY=0;
-                            break;
-                        case 'S':
-                            velocityX=0;velocityY=1;
-                            break;
-                        case 'W':
-                            velocityX=-1;velocityY=0;
-                            break; 
-                    }
+                    updateVelocity(direction);
                     break;
-
+                
                 case "Manual":
                     if(velocityX==velocityY){
                         velocityX=1;
@@ -253,25 +248,25 @@ const game = () => {
             }            
 
             // Ends game if touching wall
-            if(px<0||px>gridSize-1||py<0||py>gridSize-1) {
+            if(headPosX<0||headPosX>gridDimension-1||headPosY<0||headPosY>gridDimension-1) {
                 tail=0;
             }   
 
             // All elements of snake move to position in front
-            trail.push({x:px,y:py});
+            trail.push({x:headPosX,y:headPosY});
             while(trail.length>tail) {
                 trail.shift();
             }
 
-            px+=velocityX;
-            py+=velocityY;
+            headPosX+=velocityX;
+            headPosY+=velocityY;
 
             // Generates snake
             ctx.fillStyle="lime";
             for(var i=0;i<trail.length;i++) {
-                ctx.fillRect(trail[i].x*gridSize,trail[i].y*gridSize,gridSize-2,gridSize-2);
+                ctx.fillRect(trail[i].x*gridDimension,trail[i].y*gridDimension,gridDimension-2,gridDimension-2);
                 // Condition for snake head touching tail
-                if(trail[i].x==px && trail[i].y==py) {
+                if(trail[i].x==headPosX && trail[i].y==headPosY) {
                     if(tail==canvasSize){
                         tail=(canvasSize+1); // Flags game complete
                     } else{
@@ -280,30 +275,22 @@ const game = () => {
 
                 }
             }
+            ctx.fillRect(headPosX*gridDimension,headPosY*gridDimension,gridDimension-2,gridDimension-2);
 
             // Changes apple position when 'eaten'
-            if(applePosX==px && applePosY==py) {
+            if(applePosX===headPosX && applePosY===headPosY) {
                 tail++;
                 if (tail<canvasSize){
-                    applePosX=Math.floor(Math.random()*gridSize);
-                    applePosY=Math.floor(Math.random()*gridSize);
-                    let repeatFlag=true;
-                    while(repeatFlag){
-                        repeatFlag = false;
-                        for(i=0; i <trail.length;i++){
-                            if(trail[i].x==applePosX && trail[i].y==applePosY){
-                                applePosX=Math.floor(Math.random()*gridSize);
-                                applePosY=Math.floor(Math.random()*gridSize);
-                                repeatFlag=true;
-                            }  
-                        }
-                    }
+                    let availableSpaces = getAvailableSpaces();
+                    let newApplePosition = availableSpaces[Math.floor(Math.random()*(availableSpaces.length-1))];
+                    applePosX = newApplePosition.x;    
+                    applePosY = newApplePosition.y;    
                 }
             }
 
             // Generates apple
             ctx.fillStyle="red";
-            ctx.fillRect(applePosX*gridSize,applePosY*gridSize,gridSize-2,gridSize-2);    
+            ctx.fillRect(applePosX*gridDimension,applePosY*gridDimension,gridDimension-2,gridDimension-2);    
         } 
         
         // Game Over
@@ -337,62 +324,61 @@ const wait = (ms) => {
 }
 
 const hamiltonianCycle = () => {
-    if(px==9&&py==9){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==9){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==8){velocityX=-1;velocityY=0;}
-    if(px==1&&py==8){velocityX=0;velocityY=-1;}
-    if(px==1&&py==7){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==7){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==6){velocityX=-1;velocityY=0;}
-    if(px==1&&py==6){velocityX=0;velocityY=-1;}
-    if(px==1&&py==5){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==5){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==4){velocityX=-1;velocityY=0;}
-    if(px==1&&py==4){velocityX=0;velocityY=-1;}
-    if(px==1&&py==3){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==3){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==2){velocityX=-1;velocityY=0;}
-    if(px==1&&py==2){velocityX=0;velocityY=-1;}
-    if(px==1&&py==1){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==1){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==0){velocityX=-1;velocityY=0;}
-    if(px==0&&py==0){velocityX=0;velocityY=1;}
-    if(px==0&&py==gridSize-1){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==gridSize-1){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==20){velocityX=-1;velocityY=0;}
-    if(px==1&&py==20){velocityX=0;velocityY=-1;}
-    if(px==1&&py==19){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==19){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==18){velocityX=-1;velocityY=0;}
-    if(px==1&&py==18){velocityX=0;velocityY=-1;}
-    if(px==1&&py==17){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==17){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==16){velocityX=-1;velocityY=0;}
-    if(px==1&&py==16){velocityX=0;velocityY=-1;}
-    if(px==1&&py==15){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==15){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==14){velocityX=-1;velocityY=0;}
-    if(px==1&&py==14){velocityX=0;velocityY=-1;}
-    if(px==1&&py==13){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==13){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==12){velocityX=-1;velocityY=0;}
-    if(px==1&&py==12){velocityX=0;velocityY=-1;}
-    if(px==1&&py==11){velocityX=1;velocityY=0;}
-    if(px==gridSize-1&&py==11){velocityX=0;velocityY=-1;}
-    if(px==gridSize-1&&py==10){velocityX=-1;velocityY=0;}
-    if(px==1&&py==10){velocityX=0;velocityY=-1;}
-    if(px==1&&py==9){velocityX=1;velocityY=0;}
+    if(headPosX==9&&headPosY==9){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==9){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==8){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==8){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==7){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==7){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==6){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==6){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==5){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==5){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==4){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==4){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==3){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==3){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==2){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==2){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==1){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==1){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==0){velocityX=-1;velocityY=0;}
+    if(headPosX==0&&headPosY==0){velocityX=0;velocityY=1;}
+    if(headPosX==0&&headPosY==gridDimension-1){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==gridDimension-1){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==20){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==20){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==19){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==19){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==18){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==18){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==17){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==17){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==16){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==16){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==15){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==15){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==14){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==14){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==13){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==13){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==12){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==12){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==11){velocityX=1;velocityY=0;}
+    if(headPosX==gridDimension-1&&headPosY==11){velocityX=0;velocityY=-1;}
+    if(headPosX==gridDimension-1&&headPosY==10){velocityX=-1;velocityY=0;}
+    if(headPosX==1&&headPosY==10){velocityX=0;velocityY=-1;}
+    if(headPosX==1&&headPosY==9){velocityX=1;velocityY=0;}
 }
 
 const bestFirstSearch = () => {
-    
     // Set directional positions relative to snake head
-    nx=sx=px;
-    ey=wy=py;
-    ny=py-1;
-    sy=py+1;
-    ex=px+1;
-    wx=px-1;
+    nx=sx=headPosX;
+    ey=wy=headPosY;
+    ny=headPosY-1;
+    sy=headPosY+1;
+    ex=headPosX+1;
+    wx=headPosX-1;
 
     // Manhattan distances from directional positions to apple
     nd = Math.abs(applePosX-nx)+Math.abs(applePosY-ny);
@@ -400,21 +386,11 @@ const bestFirstSearch = () => {
     sd = Math.abs(applePosX-sx)+Math.abs(applePosY-sy);
     wd = Math.abs(applePosX-wx)+Math.abs(applePosY-wy);
     
-    // Adds poor distance score (9999) to direction which collides with tail or wall
-    for(var i=0; i <trail.length;i++){
-        if (nx==trail[i].x && ny==trail[i].y || ny==-1 || ny==gridSize){
-            nd=9999;
-        }
-        if (ex==trail[i].x && ey==trail[i].y || ex==-1 || ex==gridSize){
-            ed=9999;
-        }
-        if (sx==trail[i].x && sy==trail[i].y || sy==-1 || sy==gridSize){
-            sd=9999;
-        }
-        if (wx==trail[i].x && wy==trail[i].y || wx==-1 || wx==gridSize){
-            wd=9999;
-        }
-    } 
+    // Poor distance scores if position results in game over
+    if(!isAvailableSpace(nx,ny)) nd=9999;
+    if(!isAvailableSpace(ex,ey)) ed=9999;
+    if(!isAvailableSpace(sx,sy)) sd=9999;
+    if(!isAvailableSpace(wx,wy)) wd=9999;
     
     distances = [nd,ed,sd,wd];
     
@@ -429,11 +405,25 @@ const bestFirstSearch = () => {
             direction = d;
         }
     }
+
+    const directionMap = {
+        0: "N",
+        1: "E",
+        2: "S",
+        3: "W"
+    }
     
-    // Returns an integer in range 0-3 mapping to a favoured direction
-    return(direction);
+    return(directionMap[direction]);
 }
 
+/* 
+    Returns nested arrays, each consisting of:
+    [0] : Heuristic for distance to apple (h(x))
+    [1] : x-position of node
+    [2] : y-position of node
+    [3] : Number of expansions from root node - The actual cost of the path (g(x))
+    [4] : Root direction expanded from
+*/
 const expandNode = (x,y,cost,direction,tree) => {
     
     // Set directional positions relative to snake head
@@ -450,21 +440,11 @@ const expandNode = (x,y,cost,direction,tree) => {
     sd = Math.abs(applePosX-sx)+Math.abs(applePosY-sy);
     wd = Math.abs(applePosX-wx)+Math.abs(applePosY-wy);
     
-    // Poor distance score if wall or tail
-    for(var i=0; i <trail.length;i++){
-        if (nx==trail[i].x && ny==trail[i].y || ny==-1 || ny==gridSize){
-            nd=9999;
-        }
-        if (ex==trail[i].x && ey==trail[i].y || ex==-1 || ex==gridSize){
-            ed=9999;
-        }
-        if (sx==trail[i].x && sy==trail[i].y || sy==-1 || sy==gridSize){
-            sd=9999;
-        }
-        if (wx==trail[i].x && wy==trail[i].y || wx==-1 || wx==gridSize){
-            wd=9999;
-        }
-    } 
+    // Poor distance scores if position results in game over
+    if(!isAvailableSpace(nx,ny)) nd=9999;
+    if(!isAvailableSpace(ex,ey)) ed=9999;
+    if(!isAvailableSpace(sx,sy)) sd=9999;
+    if(!isAvailableSpace(wx,wy)) wd=9999;
     
     cost++;
     
@@ -498,15 +478,7 @@ const expandNode = (x,y,cost,direction,tree) => {
 
 const depthFirstSearch = () => {
     
-     /* 
-        tree contains nested arrays each consisting of:
-        [0] : Heuristic for distance to apple (h(x))
-        [1] : x-position of node
-        [2] : y-position of node
-        [3] : Number of expansions from root node - The actual cost of the path (g(x))
-        [4] : Root direction expanded from
-    */
-    let tree = expandNode(px,py,0,'None',[]);
+    let tree = expandNode(headPosX,headPosY,0,'None',[]);
     
     // Exit condition - When path to apple has been found or no paths exist
     let goalReached = false;
@@ -539,20 +511,12 @@ const depthFirstSearch = () => {
             }
         }
     }
-    // Returns an integer in range 0-3 mapping to a NESW direction
+
     return(direction);
 }
 
 const aStarSearch = () => {
-    /* 
-        Tree contains nested arrays each consisting of:
-        [0] : Heuristic for distance to apple (h(x))
-        [1] : x-position of node
-        [2] : y-position of node
-        [3] : Number of expansions from root node - The actual cost of the path (g(x))
-        [4] : Root direction expanded from
-    */
-    let tree = expandNode(px,py,0,'None',[]);
+    let tree = expandNode(headPosX,headPosY,0,'None',[]);
     
     // Exit condition - When path to apple has been found or no paths exist
     let goalReached = false;
@@ -589,12 +553,11 @@ const aStarSearch = () => {
         }
     }
 
-    // Returns an integer in range 0-3 mapping to a NESW direction
     return(direction);
 }
 
 const willCollideWithTrail = (xOffset, yOffset) => {
-    if(trail.find((t) => (t.x === px+xOffset && t.y === py+yOffset))) return true;
+    if(trail.find((t) => (t.x === headPosX+xOffset && t.y === headPosY+yOffset))) return true;
     return false;
 }
 
