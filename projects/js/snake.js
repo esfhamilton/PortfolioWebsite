@@ -17,6 +17,7 @@ window.onload=function() {
     let btnBFS = document.getElementById("btn-bfs");
     let btnDFS = document.getElementById("btn-dfs");
     let btnHamiltonian = document.getElementById("btn-hamiltonian");
+    let btnHamiltonian2 = document.getElementById("btn-hamiltonian2");
     let btn_aStar = document.getElementById("btn-aStar");
     
     // Sets up game based on selected algorithm
@@ -60,10 +61,25 @@ window.onload=function() {
 
     btnHamiltonian.onmouseover =function(){
         mouseOverState();
-        lineSplitter("A Hamiltonian cycle is one in which\na cyclic path traverses every node in\na graph. In this case, each node would\n correspond to a position on the grid.\n\nAs such, the snake will eventually\ncomplete the game but you will be\nwaiting a while, even on max speed",3);
+        lineSplitter("A Hamiltonian cycle is one in which\na cyclic path traverses every node in\na graph. In this case, each node would\n correspond to a position on the grid.\n\nAs such, the snake will eventually\ncomplete the game but you will be\nwaiting a while, even on max speed.",3);
     };
 
     btnHamiltonian.onmouseout =function(){
+        clearCanvas();
+        restartGame();
+    };
+    
+    btnHamiltonian2.onclick =function(){
+        modeSetup("Hamiltonian2");
+        restartGame();
+    };
+
+    btnHamiltonian2.onmouseover =function(){
+        mouseOverState();
+        lineSplitter("Built on the concept of a\nHamiltonian cycle - This algorithm\ncreates shortcuts throughout the\ncircuit to reach the apple in\nquicker times.\n\nThe algorithm reverts after the\nsnake is half the canvas size\nso that the apples spawn\ncloser to each other.\n\nCredit to John Tapsell for the idea\n",4);
+    };
+
+    btnHamiltonian2.onmouseout =function(){
         clearCanvas();
         restartGame();
     };
@@ -193,8 +209,10 @@ const updateVelocity = (direction) => {
     }   
 }
 
+const isEqual = (pos, pos2) => (pos.x === pos2.x && pos.y === pos2.y);
+
 const isAvailableSpace = (x,y) => {
-    return (!trail.find((trailPos) => trailPos.x === x && trailPos.y === y) 
+    return (!trail.find((trailPos) => isEqual(trailPos, {x,y})) 
             && !(headPosX === x && headPosY ===y)
             && x >= 0 
             && x < gridDimension
@@ -224,6 +242,11 @@ const game = () => {
             switch(mode){
                 case "Hamiltonian":
                     direction = hamiltonianCycle();
+                    updateVelocity(direction);
+                    break;
+                
+                case "Hamiltonian2":
+                    direction = hamiltonianCycle2();
                     updateVelocity(direction);
                     break;
 
@@ -324,14 +347,73 @@ const wait = (ms) => {
     while(d2-d < ms);
 }
 
-const hamiltonianCycle = () => {
-    if(headPosY !== gridDimension-1 && headPosX===0) return 'S';
-    if(headPosY%2 === 1){
-        if(headPosX === gridDimension-1) return 'N';
-        return 'E';
+let cyclicalPositionMap = [];
+for(let y=0; y<gridDimension; y++){
+    if(y===0){
+        for(let x=0; x<gridDimension; x++){
+            cyclicalPositionMap.push({x,y});
+        }   
     }
-    if(headPosY!==0 && headPosX===1) return 'N';
-    return 'W';
+    else if(y===(gridDimension-1)){
+        for(let x=gridDimension-1; x>0; x--){
+            cyclicalPositionMap.push({x,y});
+        }
+        for(let y2=gridDimension-1; y2>0; y2--){
+            cyclicalPositionMap.push({x:0,y: y2});
+        }
+    }
+    else if(y%2 === 1){
+        for(let x=gridDimension-1; x>0; x--){
+            cyclicalPositionMap.push({x,y});
+        }
+    }
+    else if(y%2 === 0){
+        for(let x=1; x<gridDimension; x++){
+            cyclicalPositionMap.push({x,y});
+        }
+    }
+    
+}
+
+const getPositionIndex = (posToFind) => cyclicalPositionMap.findIndex((pos) => isEqual(pos, posToFind));
+
+const hamiltonianCycle = () => {
+    let headPosition = {x:headPosX, y:headPosY};
+    let headPosIndex = getPositionIndex(headPosition);
+    let nextPosition = headPosIndex === cyclicalPositionMap.length-1 ? cyclicalPositionMap[0] : cyclicalPositionMap[headPosIndex+1];
+
+    if(headPosition.x === nextPosition.x){
+        if(headPosition.y-1 === nextPosition.y) return 'N';
+        return 'S';
+    }
+    if(headPosition.x-1 === nextPosition.x) return 'W';
+    return 'E';
+}
+
+let skippedPosition;
+const hamiltonianCycle2 = () => {
+    let headPosition = {x:headPosX, y:headPosY};
+    let headPosIndex = getPositionIndex(headPosition);
+    let applePosIndex = getPositionIndex({x:applePosX, y:applePosY}); 
+    let tailPosIndex = trail.length > 0 ? getPositionIndex(trail[0]) : -1;
+    let nextPosition = headPosIndex === cyclicalPositionMap.length-1 ? cyclicalPositionMap[0] : cyclicalPositionMap[headPosIndex+1];
+
+    if(tailSize<canvasSize/2){
+        skippedPosition = {x:headPosX, y:headPosY+1};
+        if(isAvailableSpace(skippedPosition.x, skippedPosition.y)){
+            let skippedPosIndex = getPositionIndex(skippedPosition);
+            if(skippedPosIndex<tailPosIndex && (skippedPosIndex<applePosIndex || headPosIndex>applePosIndex)){
+                nextPosition = skippedPosition;
+            }
+        }
+    }
+
+    if(headPosition.x === nextPosition.x){
+        if(headPosition.y-1 === nextPosition.y) return 'N';
+        return 'S';
+    }
+    if(headPosition.x-1 === nextPosition.x) return 'W';
+    return 'E';
 }
 
 const bestFirstSearch = () => {
@@ -520,7 +602,7 @@ const aStarSearch = () => {
 }
 
 const willCollideWithTrail = (xOffset, yOffset) => {
-    if(trail.find((t) => (t.x === headPosX+xOffset && t.y === headPosY+yOffset))) return true;
+    if(trail.find((pos) => isEqual(pos, {x: headPosX+xOffset, y: headPosY+yOffset}))) return true;
     return false;
 }
 
