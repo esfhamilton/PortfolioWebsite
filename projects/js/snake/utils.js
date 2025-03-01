@@ -14,7 +14,6 @@ export const expandNode = (nodePos,applePos,cost,direction,tree,trail) => {
     let { x, y } = nodePos;
     let { x: applePosX, y: applePosY } = applePos;
 
-    // Set directional positions relative to snake head
     let nx, sx, ex, wx, ny, sy, ey, wy;
     nx=sx=x;
     ey=wy=y;
@@ -23,13 +22,11 @@ export const expandNode = (nodePos,applePos,cost,direction,tree,trail) => {
     ex=x+1;
     wx=x-1;
     
-    // Manhattan distances from directional positions to apple
     let nd = Math.abs(applePosX-nx)+Math.abs(applePosY-ny);
     let ed = Math.abs(applePosX-ex)+Math.abs(applePosY-ey);
     let sd = Math.abs(applePosX-sx)+Math.abs(applePosY-sy);
     let wd = Math.abs(applePosX-wx)+Math.abs(applePosY-wy);
     
-    // Poor distance scores if position results in game over
     if(!isAvailableSpace(nx,ny,trail)) nd=9999;
     if(!isAvailableSpace(ex,ey,trail)) ed=9999;
     if(!isAvailableSpace(sx,sy,trail)) sd=9999;
