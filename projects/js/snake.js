@@ -154,7 +154,7 @@ const updateDirection = () => {
 const moveSnake = () => {
     headPosX += velocityX;
     headPosY += velocityY;
-    if (headPosX < 0 || headPosX >= gridDimension || headPosY < 0 || headPosY >= gridDimension) tailSize = 0;
+    if (!isAvailableSpace(headPosX, headPosY)) tailSize = 0;
     trail.push({ x: headPosX, y: headPosY });
     while (trail.length > tailSize) trail.shift();
     if (applePosX === headPosX && applePosY === headPosY) eatApple();
@@ -201,7 +201,6 @@ const isEqual = (pos, pos2) => (pos.x === pos2.x && pos.y === pos2.y);
 
 const isAvailableSpace = (x,y) => {
     return (!trail.find((trailPos) => isEqual(trailPos, {x,y})) 
-            && !(headPosX === x && headPosY ===y)
             && x >= 0 
             && x < gridDimension
             && y >= 0 
@@ -265,7 +264,7 @@ const hamiltonianCycle2 = () => {
 
     let nextPosition = cyclicalPositionMap[(headPosIndex + 1) % cyclicalPositionMap.length];
 
-    // Shortcuts are only optimise early/mid game
+    // Shortcuts only optimise early/mid game
     if(tailSize < canvasSize*0.7){
         let skippedPosition = { x: headPosX, y: headPosY + 1 };    
         let skippedPosIndex = getPositionIndex(skippedPosition);
