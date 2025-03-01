@@ -154,9 +154,12 @@ const updateDirection = () => {
 const moveSnake = () => {
     headPosX += velocityX;
     headPosY += velocityY;
-    if (!isAvailableSpace(headPosX, headPosY)) tailSize = 0;
+    while (trail.length >= tailSize) trail.shift();
+    if (!isAvailableSpace(headPosX, headPosY)){ 
+        tailSize = 0;
+        return;
+    }
     trail.push({ x: headPosX, y: headPosY });
-    while (trail.length > tailSize) trail.shift();
     if (applePosX === headPosX && applePosY === headPosY) eatApple();
 };
 
@@ -248,12 +251,12 @@ const hamiltonianCycle = () => {
     let headPosIndex = getPositionIndex(headPosition);
     let nextPosition = headPosIndex === cyclicalPositionMap.length-1 ? cyclicalPositionMap[0] : cyclicalPositionMap[headPosIndex+1];
 
-    if(headPosition.x === nextPosition.x){
-        if(headPosition.y-1 === nextPosition.y) return 'N';
-        return 'S';
-    }
-    if(headPosition.x-1 === nextPosition.x) return 'W';
-    return 'E';
+    const directions = {
+        "0,-1": "N", "1,0": "E",
+        "0,1": "S", "-1,0": "W" 
+    };
+    let moveKey = `${nextPosition.x - headPosition.x},${nextPosition.y - headPosition.y}`;
+    return directions[moveKey];
 }
 
 const hamiltonianCycle2 = () => {
@@ -268,7 +271,6 @@ const hamiltonianCycle2 = () => {
     if(tailSize < canvasSize*0.7){
         let skippedPosition = { x: headPosX, y: headPosY + 1 };    
         let skippedPosIndex = getPositionIndex(skippedPosition);
-
         if (skippedPosIndex !== -1 && isAvailableSpace(skippedPosition.x, skippedPosition.y)) {
             if (skippedPosIndex < tailPosIndex && (skippedPosIndex < applePosIndex || headPosIndex > applePosIndex)) {
                 nextPosition = skippedPosition;
@@ -277,12 +279,9 @@ const hamiltonianCycle2 = () => {
     }
 
     const directions = {
-        "0,-1": "N",
-        "1,0": "E",
-        "0,1": "S",
-        "-1,0": "W" 
+        "0,-1": "N", "1,0": "E",
+        "0,1": "S", "-1,0": "W" 
     };
-    
     let moveKey = `${nextPosition.x - headPosition.x},${nextPosition.y - headPosition.y}`;
     return directions[moveKey];
 };
