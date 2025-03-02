@@ -3,6 +3,7 @@ import { bestFirstSearch } from "./algorithms/bfs.js";
 import { hamiltonianCycle, hamiltonianCycle2 } from "./algorithms/hamiltonian.js";
 import { depthFirstSearch } from "./algorithms/dfs.js";
 import { aStarSearch } from "./algorithms/aStar.js";
+import { chooseAction, trainModel } from "./algorithms/dqn.js";
 
 window.onload=function() {
     setupCanvas();
@@ -38,7 +39,7 @@ const setupSpeedSlider = () => {
 };
 
 const setupButtons = () => {
-    const algorithms = ["Manual", "BFS", "DFS", "Hamiltonian", "Hamiltonian2", "aStar"];
+    const algorithms = ["Manual", "BFS", "DFS", "Hamiltonian", "Hamiltonian2", "aStar", "DQN"];
     algorithms.forEach(algo => {
         const btn = document.getElementById(`btn-${algo.toLowerCase()}`);
         btn.onclick = () => startAlgorithm(algo);
@@ -60,7 +61,8 @@ const showDescription = (algo) => {
         "DFS": "Depth-first search explores complete paths but can trap itself in loops.",
         "Hamiltonian": "A cycle that traverses every grid node, ensuring eventual completion.",
         "Hamiltonian2": "A faster Hamiltonian variant introducing shortcuts.",
-        "aStar": "A* search considers both heuristic and true cost for better pathfinding but can still trap itself."
+        "aStar": "A* search considers both heuristic and true cost for better pathfinding but can still trap itself.",
+        "DQN": "Applies reinforcement learning to a deep neural network. It develops better moves over time based on a reward function.",
     };
     drawMultilineText(descriptions[algo], canv.width / 2, canv.height / 2, 25);
 };
@@ -118,16 +120,121 @@ const setupAlgorithm = (newAlgorithm) => {
     ctx.fillText("Select an algorithm", canv.width / 2, canv.height / 2);
 };
 
-const game = () => {
+const getDistanceToObstacle = (dx, dy) => {
+    let distance = 0;
+    let x = headPosX, y = headPosY;
+    while (isAvailableSpace(x + dx, y + dy, trail)) {
+        x += dx;
+        y += dy;
+        distance++;
+    }
+    return distance / gridDimension;
+};
+
+// Inputs must be normalized between 0 and 1
+const getState = () => {
+    return [
+        headPosX / gridDimension, 
+        headPosY / gridDimension, 
+        (applePosX - headPosX) / gridDimension, 
+        (applePosY - headPosY) / gridDimension, 
+        velocityX, 
+        velocityY, 
+        headPosX / gridDimension, 
+        (gridDimension - 1 - headPosX) / gridDimension,
+        headPosY / gridDimension,
+        (gridDimension - 1 - headPosY) / gridDimension,
+        getDistanceToObstacle(1, 0),
+        getDistanceToObstacle(-1, 0),
+        getDistanceToObstacle(0, 1),
+        getDistanceToObstacle(0, -1),
+        tailSize / (gridDimension * gridDimension)
+    ];
+};
+
+// Deep Q-Learning (DQN) Variables
+let experience = [];
+let trainingInProgress = false;
+let epsilon = 1.0; // Exploration rate
+const epsilonDecay = 0.975; 
+const minEpsilon = 0.01; 
+let trainingIterations = 0;
+const starvationLimit = canvasSize/3;
+let starvation, record = 0;
+
+const game = async () => {
     if (algorithm === "None") return;
-    if (tailSize <= 0) return gameOver();
-    if (tailSize == canvasSize) return gameComplete();
+
+    if (tailSize <= 0) {
+        gameOver();
+        if (algorithm === "DQN") {
+            startAlgorithm("DQN");
+        }
+        return;
+    }
+
+    if (tailSize == canvasSize) gameComplete();
+    
     clearCanvas();
     time++;
     document.getElementById("timeVal").innerHTML = time;
     document.getElementById("sizeVal").innerHTML = tailSize + 1;
-    updateDirection();
-    moveSnake();
+
+    if (algorithm === "DQN") {
+        const prevState = getState();
+        let prevHeadX = headPosX, prevHeadY = headPosY;
+        let prevAppleX = applePosX, prevAppleY = applePosY;
+        let action = chooseAction(prevState, headPosX, headPosY, trail, epsilon); 
+        updateVelocity(action);
+        moveSnake();
+        starvation+=1;
+        const newState = getState();
+        
+        let reward = 0;
+        if (headPosX === prevAppleX && headPosY === prevAppleY) {
+            reward = 10;
+            starvation = 0;
+            if (tailSize+1 > record){
+                record = tailSize+1;
+                console.log(`New DQN record set: Size=${record}, Time=${time}, Training Iterations=${trainingIterations}`);
+            } 
+        } else if (starvation > starvationLimit) {
+            reward = -10;
+            starvation = 0;
+            tailSize = 0;
+        } else if (tailSize === 0) {
+            reward = -10;
+            starvation = 0;
+        } else {
+            const prevDist = Math.abs(prevHeadX - prevAppleX) + Math.abs(prevHeadY - prevAppleY);
+            const newDist = Math.abs(headPosX - prevAppleX) + Math.abs(headPosY - prevAppleY);
+    
+            if (newDist < prevDist) {
+                reward = 1;
+            } else if (newDist > prevDist) {
+                reward = -1;
+            }
+        }
+    
+        experience.push({ prevState, action, reward, newState });
+    
+        if (experience.length > 1000 && !trainingInProgress) {
+            trainingInProgress = true;
+            trainModel(experience).then(() => {
+                experience = experience.slice(-200);
+                trainingInProgress = false;
+                epsilon = Math.max(minEpsilon, epsilon * epsilonDecay);
+                trainingIterations++;
+            }).catch((error) => {
+                console.error("Training error:", error);
+                trainingInProgress = false;
+            });
+        }
+    } else {
+        updateDirection();
+        moveSnake();
+    }
+
     drawSnake();
     drawApple();
 };
