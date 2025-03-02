@@ -192,27 +192,27 @@ const game = async () => {
         
         let reward = 0;
         if (headPosX === prevAppleX && headPosY === prevAppleY) {
-            reward = 10; // ✅ Apple eaten
+            reward = 10;
             starvation = 0;
             if (tailSize+1 > record){
                 record = tailSize+1;
                 console.log(`New DQN record set: Size=${record}, Time=${time}, Training Iterations=${trainingIterations}`);
             } 
         } else if (starvation > starvationLimit) {
-            reward = -10; // ❌ Starvation
+            reward = -10;
             starvation = 0;
             tailSize = 0;
         } else if (tailSize === 0) {
-            reward = -10; // ❌ Crashed
+            reward = -10;
             starvation = 0;
         } else {
             const prevDist = Math.abs(prevHeadX - prevAppleX) + Math.abs(prevHeadY - prevAppleY);
             const newDist = Math.abs(headPosX - prevAppleX) + Math.abs(headPosY - prevAppleY);
     
             if (newDist < prevDist) {
-                reward = 1; // ✅ Moving closer to apple
+                reward = 1;
             } else if (newDist > prevDist) {
-                reward = -1; // ❌ Moving away from apple
+                reward = -1;
             }
         }
     
