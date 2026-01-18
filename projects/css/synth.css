@@ -1,0 +1,127 @@
+.drum-machine {
+    margin: 40px auto;
+    padding: 20px;
+    background: #2a2a2a;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    max-width: 90%;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+}
+
+.drum-title {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.drum-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(16, minmax(0, 30px));
+    gap: 2px;
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+    overflow-x: auto;
+}
+
+.drum-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    background: #3a3a3a;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.drum-cell {
+    width: 26px;
+    height: 26px;
+    background: #4a4a4a;
+    border: 1px solid #666;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.drum-cell:hover {
+    background: #5a5a5a;
+    transform: scale(1.05);
+}
+
+.drum-cell.active {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+}
+
+.drum-cell.playing {
+    background: linear-gradient(135deg, #ffd93d, #ff6b6b);
+    animation: pulse 0.2s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.drum-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.bpm-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+}
+
+.bpm-slider {
+    width: 120px;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #4a4a4a;
+    border-radius: 3px;
+    outline: none;
+}
+
+.bpm-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #4ecdc4;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.bpm-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #4ecdc4;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+.bpm-display {
+    background: #3a3a3a;
+    padding: 5px 10px;
+    border-radius: 4px;
+    min-width: 50px;
+    text-align: center;
+}
