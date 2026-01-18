@@ -64,79 +64,38 @@
         <script src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.dom.min.js></script>
         <script src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script>
         <script>
-            let C = {90:'C1',88:'D1',67:'E1',86:'F1',66:'G1',78:'A1',77:'B1',
-                     65:'C2',83:'D2',68:'E2',70:'F2',71:'G2',72:'A2',74:'B2',
-                     81:'C3',87:'D3',69:'E3',82:'F3',84:'G3',89:'A3',85:'B3',
-                     49:'C4',50:'D4',51:'E4',52:'F4',53:'G4',54:'A4',55:'B4',56:'C5'};
-             
-            let G = {90:'G1',88:'A1',67:'B1',86:'C2',66:'D2',78:'E2',77:'Gb2',
-                     65:'G2',83:'A2',68:'B2',70:'C3',71:'D3',72:'E3',74:'Gb3',
-                     81:'G3',87:'A3',69:'B3',82:'C4',84:'D4',89:'E4',85:'Gb4',
-                     49:'G4',50:'A4',51:'B4',52:'C5',53:'D5',54:'E5',55:'Gb5',56:'G5'};
-            
-            let D = {90:'D1',88:'E1',67:'Gb1',86:'G1',66:'A1',78:'B1',77:'Db2',
-                     65:'D2',83:'E2',68:'Gb2',70:'G2',71:'A2',72:'B2',74:'Db3',
-                     81:'D3',87:'E3',69:'Gb3',82:'G3',84:'A3',89:'B3',85:'Db4',
-                     49:'D4',50:'E4',51:'Gb4',52:'G4',53:'A4',54:'B4',55:'Db5',56:'D5'};
-             
-            let A = {90:'A1',88:'B1',67:'Db2',86:'D2',66:'E2',78:'Gb2',77:'Ab2',
-                     65:'A2',83:'B2',68:'Db3',70:'D3',71:'E3',72:'Gb3',74:'Ab3',
-                     81:'A3',87:'B3',69:'Db4',82:'D4',84:'E4',89:'Gb4',85:'Ab4',
-                     49:'A4',50:'B4',51:'Db5',52:'D5',53:'E5',54:'Gb5',55:'Ab5',56:'A5'};
-            
-            let E = {90:'E1',88:'Gb1',67:'Ab1',86:'A1',66:'B1',78:'Db2',77:'Eb2',
-                     65:'E2',83:'Gb2',68:'Ab2',70:'A2',71:'B2',72:'Db3',74:'Eb3',
-                     81:'E3',87:'Gb3',69:'Ab3',82:'A3',84:'B3',89:'Db4',85:'Eb4',
-                     49:'E4',50:'Gb4',51:'Ab4',52:'A4',53:'B4',54:'Db5',55:'Eb5',56:'E5'};
-             
-            let B = {90:'B1',88:'Db2',67:'Eb2',86:'E2',66:'Gb2',78:'Ab2',77:'Bb2',
-                     65:'B2',83:'Db3',68:'Eb3',70:'E3',71:'Gb3',72:'Ab3',74:'Bb3',
-                     81:'B3',87:'Db4',69:'Eb4',82:'E4',84:'Gb4',89:'Ab4',85:'Bb4',
-                     49:'B4',50:'Db5',51:'Eb5',52:'E5',53:'Gb5',54:'Ab5',55:'Bb5',56:'B5'};
-            
-            let F = {90:'F1',88:'G1',67:'A1',86:'Bb1',66:'C2',78:'D2',77:'E2',
-                     65:'F2',83:'G2',68:'A2',70:'Bb2',71:'C3',72:'D3',74:'E3',
-                     81:'F3',87:'G3',69:'A3',82:'Bb3',84:'C4',89:'D4',85:'E4',
-                     49:'F4',50:'G4',51:'A4',52:'Bb4',53:'C5',54:'D5',55:'E5',56:'F5'};
-            
-            let Am = {90:'A1',88:'B1',67:'C2',86:'D2',66:'E2',78:'F2',77:'G2',
-                      65:'A2',83:'B2',68:'C3',70:'D3',71:'E3',72:'F3',74:'G3',
-                      81:'A3',87:'B3',69:'C4',82:'D4',84:'E4',89:'F4',85:'G4',
-                      49:'A4',50:'B4',51:'C5',52:'D5',53:'E5',54:'F5',55:'G5',56:'A5'};
-            
-            let Em = {90:'E1',88:'Gb1',67:'G1',86:'A1',66:'B1',78:'C2',77:'D2',
-                      65:'E2',83:'Gb2',68:'G2',70:'A2',71:'B2',72:'C3',74:'D3',
-                      81:'E3',87:'Gb3',69:'G3',82:'A3',84:'B3',89:'C4',85:'D4',
-                      49:'E4',50:'Gb4',51:'G4',52:'A4',53:'B4',54:'C5',55:'D5',56:'E5'};
-             
-            let Bm = {90:'B1',88:'Db2',67:'D2',86:'E2',66:'Gb2',78:'G2',77:'A2',
-                      65:'B2',83:'Db3',68:'D3',70:'E3',71:'Gb3',72:'G3',74:'A3',
-                      81:'B3',87:'Db4',69:'D4',82:'E4',84:'Gb4',89:'G4',85:'A4',
-                      49:'B4',50:'Db5',51:'D5',52:'E5',53:'Gb5',54:'G5',55:'A5',56:'B5'};
-            
-            let Dm = {90:'D1',88:'E1',67:'F1',86:'G1',66:'A1',78:'Bb1',77:'C2',
-                      65:'D2',83:'E2',68:'F2',70:'G2',71:'A2',72:'Bb2',74:'C3',
-                      81:'D3',87:'E3',69:'F3',82:'G3',84:'A3',89:'Bb3',85:'C4',
-                      49:'D4',50:'E4',51:'F4',52:'G4',53:'A4',54:'Bb4',55:'C5',56:'D5'};
-             
-            let Gm = {90:'G1',88:'A1',67:'Bb1',86:'C2',66:'D2',78:'Eb2',77:'F2',
-                      65:'G2',83:'A2',68:'Bb2',70:'C3',71:'D3',72:'Eb3',74:'F3',
-                      81:'G3',87:'A3',69:'Bb3',82:'C4',84:'D4',89:'Eb4',85:'F4',
-                      49:'G4',50:'A4',51:'Bb4',52:'C5',53:'D5',54:'Eb5',55:'F5',56:'G5'};
-            
-            let Cm = {90:'C1',88:'D1',67:'Eb1',86:'F1',66:'G1',78:'Ab1',77:'Bb1',
-                      65:'C2',83:'D2',68:'Eb2',70:'F2',71:'G2',72:'Ab2',74:'Bb2',
-                      81:'C3',87:'D3',69:'Eb3',82:'F3',84:'G3',89:'Ab3',85:'Bb3',
-                      49:'C4',50:'D4',51:'Eb4',52:'F4',53:'G4',54:'Ab4',55:'Bb4',56:'C5'};
-            
-            let Fm = {90:'F1',88:'G1',67:'Ab1',86:'Bb1',66:'C2',78:'Db2',77:'Eb2',
-                      65:'F2',83:'G2',68:'Ab2',70:'Bb2',71:'C3',72:'Db3',74:'Eb3',
-                      81:'F3',87:'G3',69:'Ab3',82:'Bb3',84:'C4',89:'Db4',85:'Eb4',
-                      49:'F4',50:'G4',51:'Ab4',52:'Bb4',53:'C5',54:'Db5',55:'Eb5',56:'F5'};          
+            function createScale(notes) {
+                const keys = [90,88,67,86,66,78,77,65,83,68,70,71,72,74,81,87,69,82,84,89,85,49,50,51,52,53,54,55,56];
+                const octaves = [1,1,1,1,1,1,1,2,2,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,5];
+                
+                let scale = {};
+                for (let i = 0; i < keys.length; i++) {
+                    scale[keys[i]] = notes[i % notes.length] + octaves[i];
+                }
+                return scale;
+            }
 
-             
-            let scales = {"C":C,"D":D,"E":E,"F":F,"G":G,"A":A,"B":B,
-                          "Cm":Cm,"Dm":Dm,"Em":Em,"Fm":Fm,"Gm":Gm,"Am":Am,"Bm":Bm};
+            const scalePatterns = {
+                'C': ['C','D','E','F','G','A','B'],
+                'G': ['G','A','B','C','D','E','Gb'],
+                'D': ['D','E','Gb','G','A','B','Db'],
+                'A': ['A','B','Db','D','E','Gb','Ab'],
+                'E': ['E','Gb','Ab','A','B','Db','Eb'],
+                'B': ['B','Db','Eb','E','Gb','Ab','Bb'],
+                'F': ['F','G','A','Bb','C','D','E'],
+                'Am': ['A','B','C','D','E','F','G'],
+                'Em': ['E','Gb','G','A','B','C','D'],
+                'Bm': ['B','Db','D','E','Gb','G','A'],
+                'Dm': ['D','E','F','G','A','Bb','C'],
+                'Gm': ['G','A','Bb','C','D','Eb','F'],
+                'Cm': ['C','D','Eb','F','G','Ab','Bb'],
+                'Fm': ['F','G','Ab','Bb','C','Db','Eb']
+            };
+
+            let scales = {};
+            Object.keys(scalePatterns).forEach(key => {
+                scales[key] = createScale(scalePatterns[key]);
+            });
             let scale = "C";
             let sharpen = false;
             
@@ -167,54 +126,42 @@
 
             let activeNotes = new Set();
             let cnv;
-            document.addEventListener('keydown', function(e) {
-                
+            function getSharpenedNote(note) {
+                return (note[1]=='b') ? note[0]+note[2] : note[0]+"#"+note[1];
+            }
+
+            function handleKeyEvent(e, isKeyDown) {
                 let scaleDropDown = document.getElementById("scaleDropDown");
                 scaleDropDown.blur();
                 let key = e.keyCode;
-                let sharpenedKey;
 
                 if(key == 16){
-                    sharpen = true;
+                    sharpen = isKeyDown ? true : false;
                     return;
                 }
 
-                if(scales[scale][key]!=undefined && !activeNotes.has(key)){
-                        
-                    let noteToPlay;
+                if(scales[scale][key] !== undefined && activeNotes.has(key) !== isKeyDown){
+                    let note = scales[scale][key];
                     if(sharpen){
-                        noteToPlay = (scales[scale][key][1]=='b') ? scales[scale][key][0]+scales[scale][key][2] 
-                                                                    : scales[scale][key][0]+"#"+scales[scale][key][1];
+                        note = getSharpenedNote(note);
                     }
-                    else{
-                        noteToPlay = scales[scale][key];
+                    
+                    if(isKeyDown){
+                        synth.triggerAttack(note);
+                        activeNotes.add(key);
+                    } else {
+                        synth.triggerRelease(note);
+                        activeNotes.delete(key);
                     }
-                    synth.triggerAttack(noteToPlay);
-                    activeNotes.add(key);
                 }
+            }
+
+            document.addEventListener('keydown', function(e) {
+                handleKeyEvent(e, true);
             });
 
             document.addEventListener('keyup', function(e) {
-                let key = e.keyCode;
-                
-                if(key == 16){
-                    sharpen = false;
-                    return;
-                }
-
-                if(scales[scale][key]!=undefined && activeNotes.has(key)){
-                    let noteToRelease;
-                    if(sharpen){
-                        noteToRelease = (scales[scale][key][1]=='b') ? scales[scale][key][0]+scales[scale][key][2] 
-                                                                    : scales[scale][key][0]+"#"+scales[scale][key][1];
-                    }
-                    else{
-                        noteToRelease = scales[scale][key];
-                    }
-                    
-                    synth.triggerRelease(noteToRelease);
-                    activeNotes.delete(key);
-                }
+                handleKeyEvent(e, false);
             });
       
             /*
@@ -223,11 +170,11 @@
                 Drum Sequencer guide from which the
                 following section is based from.
             */
-            let kickBeats, hhBeats, hhoBeats, snareBeats, rsBeats, cbBeats, bassBeats; // Stores beat pattern 
-            let drums; // p5 part for running each drum phrase simultaneously
-            let numBeats; // Length of the beats list
-            let sequence; // Sequence of beats for tracing 
-            let cellWidth; // Canvas width/ number of beats
+            let kickBeats, hhBeats, hhoBeats, snareBeats, rsBeats, cbBeats, bassBeats;
+            let drums;
+            let numBeats;
+            let sequence;
+            let cellWidth;
 
             function setup() {
                 cnv = createCanvas(320,140);
@@ -237,60 +184,32 @@
                 document.querySelector('canvas').style = "position:absolute; left: 50%; width: 400px; margin-left: -200px; margin-top: 70px;";
                 cnv.parent("main");
                 
-                let kick  =  loadSound('../resources/audio/DrumKit/kick.wav', () => {});
-                let hh    =  loadSound('../resources/audio/DrumKit/hhclosed.wav', () => {});
-                let hho   =  loadSound('../resources/audio/DrumKit/hhopen.wav', () => {});
-                let snare =  loadSound('../resources/audio/DrumKit/snare.wav', () => {});
-                let rs    =  loadSound('../resources/audio/DrumKit/rimshot.wav', () => {});
-                let cb    =  loadSound('../resources/audio/DrumKit/cowbell.wav', () => {});
-                let bass  =  loadSound('../resources/audio/DrumKit/bass.wav', () => {});
-                
-                kickBeats  = [1,0,0,0,1,0,0,0,0,0,1,1,1,0,1,0];
-                hhBeats    = [1,0,1,0,1,0,1,0,1,0,1,1,0,0,0,0];
-                hhoBeats   = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                snareBeats = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-                rsBeats    = [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0];
-                cbBeats    = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0];
-                bassBeats  = [1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,0];
-                sequence   = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
-                
-                let kickPhrase = new p5.Phrase('kick', (time) => {
-                    kick.play(time);
-                }, kickBeats);
-                
-                let hhPhrase = new p5.Phrase('hh', (time) => {
-                    hh.play(time);
-                }, hhBeats);
-                
-                let hhoPhrase = new p5.Phrase('hho', (time) => {
-                    hho.play(time);
-                }, hhoBeats);
-                
-                let snarePhrase = new p5.Phrase('snare', (time) => {
-                    snare.play(time);
-                }, snareBeats);
-                
-                let rsPhrase = new p5.Phrase('rs', (time) => {
-                    rs.play(time);
-                }, rsBeats);
-                
-                let cbPhrase = new p5.Phrase('cb', (time) => {
-                    cb.play(time);
-                }, cbBeats);
-                
-                let bassPhrase = new p5.Phrase('bass', (time) => {
-                    bass.play(time);
-                }, bassBeats);
-                
+                const drumFiles = ['kick', 'hh', 'hho', 'snare', 'rs', 'cb', 'bass'];
+                const drumSounds = drumFiles.map(file => 
+                    loadSound(`../resources/audio/DrumKit/${file === 'hh' ? 'hhclosed' : file === 'hho' ? 'hhopen' : file}.wav`, () => {})
+                );
+                 
+                const beatPatterns = [
+                    [1,0,0,0,1,0,0,0,0,0,1,1,1,0,1,0],
+                    [1,0,1,0,1,0,1,0,1,0,1,1,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+                    [1,1,0,1,1,0,1,1,0,1,1,0,1,1,1,0]
+                ];
+                 
+                [kickBeats, hhBeats, hhoBeats, snareBeats, rsBeats, cbBeats, bassBeats] = beatPatterns;
+                sequence = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+                 
+                const drumNames = ['kick', 'hh', 'hho', 'snare', 'rs', 'cb', 'bass'];
+                const drumPhrases = drumNames.map((name, i) => 
+                    new p5.Phrase(name, (time) => drumSounds[i].play(time), beatPatterns[i])
+                );
+                 
                 drums = new p5.Part();
-                drums.addPhrase(kickPhrase);
-                drums.addPhrase(hhPhrase);
-                drums.addPhrase(hhoPhrase);
-                drums.addPhrase(snarePhrase);
-                drums.addPhrase(rsPhrase);
-                drums.addPhrase(cbPhrase);
-                drums.addPhrase(bassPhrase);
-                drums.addPhrase('seq',tracer,sequence);
+                drumPhrases.forEach(phrase => drums.addPhrase(phrase));
+                drums.addPhrase('seq', tracer, sequence);
                 
                 let bpmSlider = createSlider(30, 600, 80, 1);
                 //bpmSlider.position(x,y);
@@ -334,36 +253,12 @@
             
             function canvasPressed() {
                 let rowClicked = floor(7*mouseY/height);
-                let columnClicked = floor(numBeats*mouseX/width)
-                switch (rowClicked){
-                    case 0:
-                        kickBeats[columnClicked]=1-kickBeats[columnClicked];
-                        drawMatrix();
-                        break;
-                    case 1:
-                        hhBeats[columnClicked]=1-hhBeats[columnClicked];
-                        drawMatrix();
-                        break;
-                    case 2:
-                        hhoBeats[columnClicked]=1-hhoBeats[columnClicked];
-                        drawMatrix();
-                        break;
-                    case 3:
-                        snareBeats[columnClicked]=1-snareBeats[columnClicked];
-                        drawMatrix();
-                        break;
-                    case 4:
-                        rsBeats[columnClicked]=1-rsBeats[columnClicked];
-                        drawMatrix();
-                        break;
-                    case 5:
-                        cbBeats[columnClicked]=1-cbBeats[columnClicked];
-                        drawMatrix();
-                        break;
-                    case 6:
-                        bassBeats[columnClicked]=1-bassBeats[columnClicked];
-                        drawMatrix();
-                        break;
+                let columnClicked = floor(numBeats*mouseX/width);
+                const beatArrays = [kickBeats, hhBeats, hhoBeats, snareBeats, rsBeats, cbBeats, bassBeats];
+                
+                if(rowClicked >= 0 && rowClicked < beatArrays.length){
+                    beatArrays[rowClicked][columnClicked] = 1 - beatArrays[rowClicked][columnClicked];
+                    drawMatrix();
                 }
             }
             
@@ -372,39 +267,23 @@
                 stroke('gray');
                 strokeWeight(2);
                 fill('white');
-                for (let i=0; i<numBeats+1;i++){
-                    line(i*cellWidth,0,i*cellWidth,height);
-                }
-                for (let i=0; i<7;i++){
-                    line(0,i*height/7,width,i*height/7);
+                
+                for(let i = 0; i <= numBeats; i++){
+                    line(i*cellWidth, 0, i*cellWidth, height);
                 }
                 
-                for (let i=0; i<numBeats;i++){
-                    line(i*cellWidth,0,i*cellWidth,height);
+                for(let i = 0; i <= 7; i++){
+                    line(0, i*height/7, width, i*height/7);
                 }
                 
-                for (let i=0; i<numBeats;i++){
-                    if(kickBeats[i]===1){ 
-                       ellipse(i*cellWidth+0.5*cellWidth,height/14,10);
+                const beatArrays = [kickBeats, hhBeats, hhoBeats, snareBeats, rsBeats, cbBeats, bassBeats];
+                
+                for(let row = 0; row < beatArrays.length; row++){
+                    for(let col = 0; col < numBeats; col++){
+                        if(beatArrays[row][col] === 1){
+                            ellipse(col*cellWidth + 0.5*cellWidth, (row*2 + 1)*height/14, 10);
+                        }
                     }
-                    if(hhBeats[i]===1){     
-                        ellipse(i*cellWidth+0.5*cellWidth,3*height/14,10);
-                    }
-                    if(hhoBeats[i]===1){  
-                        ellipse(i*cellWidth+0.5*cellWidth,5*height/14,10);
-                    }
-                    if(snareBeats[i]===1){  
-                        ellipse(i*cellWidth+0.5*cellWidth,7*height/14,10);
-                    }
-                    if(rsBeats[i]===1){  
-                        ellipse(i*cellWidth+0.5*cellWidth,9*height/14,10);
-                    }
-                    if(cbBeats[i]===1){  
-                        ellipse(i*cellWidth+0.5*cellWidth,11*height/14,10);
-                    }
-                    if(bassBeats[i]===1){  
-                        ellipse(i*cellWidth+0.5*cellWidth,13*height/14,10);
-                    }                    
                 }
             }
             
