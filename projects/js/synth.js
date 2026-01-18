@@ -125,11 +125,7 @@ class DrumMachine {
             const buffer = new Tone.Buffer(
                 `../resources/audio/DrumKit/${file}.wav`,
                 () => {
-                    console.log(`Loaded ${file}`);
                     this.buffers[index] = buffer;
-                    if (this.buffers.filter(b => b).length === this.drumFiles.length) {
-                        console.log('All drum samples loaded');
-                    }
                 },
                 (e) => console.error(`Failed to load ${file}:`, e)
             );
@@ -180,11 +176,6 @@ class DrumMachine {
 
         playBtn.addEventListener('click', async () => {
             await Tone.start();
-            console.log('Audio context started');
-            
-            const loadedCount = this.buffers.filter(b => b && b.loaded).length;
-            console.log(`Buffers loaded: ${loadedCount}/${this.drumFiles.length}`);
-            
             this.start();
         });
         
